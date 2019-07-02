@@ -1,10 +1,8 @@
-
-
 const app = require('express')();
 const port = 5000
 
 var expressMongoDb = require('express-mongo-db');
-app.use(expressMongoDb('mongodb://mongodb:27017/mydb'));
+app.use(expressMongoDb('mongodb://mongodb:27017'));
 
 
 app.get('/companies', getCompanies);
@@ -20,17 +18,17 @@ function getCompanies (req, res) {
         res.send(results)
     });
 
-    req.db.close();
 };
 
 function addCompany (req, res) {
     var dbo = req.db.db("mydb");
 
-    var myobj = { name: "Company LLC", address: "Highway 9" };
+    var myobj = { name: "Company LLC", address: "Highway 10" };
 
     dbo.collection("customers").insertOne(myobj, function(err, response) {
         if (err) throw err;
         res.send("1 document inserted");
-        req.db.close();
     });
-} 
+};
+
+module.exports = app;
