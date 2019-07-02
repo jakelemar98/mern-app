@@ -3,7 +3,7 @@ version: "2"
 services:
 
   mongodb:
-    container_name: mongodb
+    container_name: mongo
     image: "mongo"
     ports: 
       - "27017:27017"
@@ -19,6 +19,8 @@ services:
       - ./back-end/node-app/:/usr/src/app
     depends_on:
       - mongodb
+    environment:
+      NODE_ENV: development
 
   frontend:
     container_name: react-app
