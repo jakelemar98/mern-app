@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: k8s-mern-app
-          image: jakelemar98/mern-app:latest:$COMMIT_SHA1
+          image: jakelemar98/mern-app:$COMMIT_SHA1
           ports:
             - containerPort: 80
               name: http
