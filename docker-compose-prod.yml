@@ -13,9 +13,6 @@ services:
   backend:
     container_name: node-app
     image: "jakelemar98/mern-app:latestBack"
-    build:
-      context: ./back-end/node-app/
-      dockerfile: Dockerfile-prod
     ports: 
       - "5004:5000"
     depends_on:
@@ -24,9 +21,6 @@ services:
   frontend:
     container_name: react-app
     image: "jakelemar98/mern-app:latest"
-    build: 
-      contenxt: ./front-end/react-app/
-      dockerfile: Dockerfile-prod
     ports:
       - "9090:3000"
     depends_on:
