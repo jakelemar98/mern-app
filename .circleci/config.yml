@@ -5,7 +5,7 @@ jobs:
       - image: circleci/buildpack-deps:stretch
     environment:
       IMAGE_NAME: jakelemar98/mern-app
-    working_directory: ~/app
+    working_directory: ~/front-end/react-app
     steps:
       - checkout
       - setup_remote_docker
