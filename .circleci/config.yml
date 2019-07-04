@@ -5,14 +5,14 @@ jobs:
       - image: circleci/buildpack-deps:stretch
     environment:
       IMAGE_NAME: jakelemar98/mern-app
-    working_directory: ~/app
+    working_directory: ~/app/front-end/react-app
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Build Docker image
           command: |
-            docker build -t $IMAGE_NAME:latest -f Dockerfile-prod ./front-end/react-app
+            docker build -t $IMAGE_NAME:latest -f Dockerfile-prod .
       - run:
           name: Push Docker Image
           command: |
