@@ -13,6 +13,7 @@ export COMMIT_SHA1=$COMMIT_SHA1
 envsubst <./k8s/mern-deployment.yml >./k8s/mern-deployment.yml.out
 mv ./k8s/mern-deployment.yml.out ./k8s/mern-deployment.yml
 
+echo "$COMMIT_SHA1"
 # echo "$KUBERNETES_CLUSTER_CERTIFICATE" | base64 -di > cert.crt
 
 ./kubectl \
