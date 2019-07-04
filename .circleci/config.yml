@@ -12,7 +12,7 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            docker build -t $IMAGE_NAME:latest -f ./front-end/react-app/Dockerfile-prod .
+            docker build -t $IMAGE_NAME:latest -f ./front-end/react-app/Dockerfile-prod ./front-end/react-app/
       - run:
           name: Push Docker Image
           command: |
