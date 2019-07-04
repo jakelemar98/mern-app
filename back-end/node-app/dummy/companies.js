@@ -7,7 +7,7 @@ const companies = [
         {
         "_id": "5d1a9acc98123b7a795c673c",
         "name": "Company LLC",
-        "address": "Highway 69"
+        "address": "Highw 69"
         },
         {
         "_id": "5d1a9aefe3440d86692dff51",
