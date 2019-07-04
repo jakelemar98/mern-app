@@ -13,3 +13,10 @@ spec:
       name: http
   selector:
     app: k8s-mern-app
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+      name: http
