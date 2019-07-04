@@ -19,6 +19,5 @@ mv ./k8s/mern-deployment.yml.out ./k8s/mern-deployment.yml
   --insecure-skip-tls-verify \
   --kubeconfig=/dev/null \
   --server=$KUBERNETES_SERVER \
-  --certificate-authority=cert.crt \
   --token=$KUBERNETES_TOKEN \
   apply -f ./k8s/
