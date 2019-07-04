@@ -12,8 +12,8 @@ export COMMIT_SHA1=$COMMIT_SHA1
 #  and overwrite the original with that one.
 envsubst <./k8s/mern-deployment.yml >./k8s/mern-deployment.yml.out
 mv ./k8s/mern-deployment.yml.out ./k8s/mern-deployment.yml
-
-echo "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURKekNDQWcrZ0F3SUJBZ0lDQm5Vd0RRWUpLb1pJaHZjTkFRRUxCUUF3TXpFVk1CTUdBMVVFQ2hNTVJHbG4KYVhSaGJFOWpaV0Z1TVJvd0dBWUR" | base64 --decode > cert.crt
+echo "hey"
+echo "$KUBERNETES_CLUSTER_CERTIFICATE" | base64 --decode > cert.crt
 
 ./kubectl \
   --kubeconfig=/dev/null \
