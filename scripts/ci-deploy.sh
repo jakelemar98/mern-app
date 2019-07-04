@@ -11,7 +11,7 @@ export COMMIT_SHA1=$COMMIT_SHA1
 #  it's not possible to do in-place substitution, so we need to save the output to another file
 #  and overwrite the original with that one.
 envsubst <./k8s/mern-deployment.yml >./k8s/mern-deployment.yml.out
-mv ./k8s/mernc-deployment.yml.out ./k8s/mern-deployment.yml
+mv ./k8s/mern-deployment.yml.out ./k8s/mern-deployment.yml
 
 echo "$KUBERNETES_CLUSTER_CERTIFICATE" | base64 --decode > cert.crt
 
