@@ -12,7 +12,6 @@ services:
 
   backend:
     container_name: node-app
-    image: "jakelemar98/mern-app:devBack"
     build:
       context: ./back-end/node-app/
       dockerfile: Dockerfile
@@ -28,9 +27,8 @@ services:
   frontend:
     container_name: react-app
     build: 
-      contenxt: ./front-end/react-app/
+      context: ./front-end/react-app/
       dockerfile: Dockerfile
-    image: "jakelemar98/mern-app:dev"
     ports:
       - "9090:3000"
     volumes:
