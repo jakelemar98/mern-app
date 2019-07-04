@@ -16,8 +16,5 @@ mv ./k8s/mern-deployment.yml.out ./k8s/mern-deployment.yml
 # echo "$KUBERNETES_CLUSTER_CERTIFICATE" | base64 -di > cert.crt
 
 ./kubectl \
-  --insecure-skip-tls-verify \
-  --kubeconfig=/dev/null \
-  --server=$KUBERNETES_SERVER \
-  --token=$KUBERNETES_TOKEN \
+  --kubeconfig config \
   apply -f ./k8s/
