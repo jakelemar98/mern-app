@@ -12,29 +12,23 @@ services:
 
   backend:
     container_name: node-app
-    image: "jakelemar98/mern-app:devBack"
+    image: "jakelemar98/mern-app:latestBack"
     build:
       context: ./back-end/node-app/
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-prod
     ports: 
       - "5004:5000"
-    volumes:
-      - ./back-end/node-app/:/usr/src/app
     depends_on:
       - mongodb
-    environment:
-      NODE_ENV: development
 
   frontend:
     container_name: react-app
+    image: "jakelemar98/mern-app:latest"
     build: 
       contenxt: ./front-end/react-app/
-      dockerfile: Dockerfile
-    image: "jakelemar98/mern-app:dev"
+      dockerfile: Dockerfile-prod
     ports:
       - "9090:3000"
-    volumes:
-      - ./front-end/react-app/:/usr/src/app
     depends_on:
       - backend
 
