@@ -20,4 +20,4 @@ mv ./k8s/mern-deployment.yml.out ./k8s/mern-deployment.yml
   --server=$KUBERNETES_SERVER \
   --certificate-authority=cert.crt \
   --token=$KUBERNETES_TOKEN \
-  apply -f ./kube/
+  apply -f ./k8s/
