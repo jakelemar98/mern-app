@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 
-export class userForm extends Component {
+export class Dashboard extends Component {
     render() {
         return (
             <div>
-                
+                hello
             </div>
         )
     }
 }
 
-export default userForm
+export default Dashboard
