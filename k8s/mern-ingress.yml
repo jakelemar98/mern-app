@@ -4,10 +4,16 @@ metadata:
   name: mern-ingress
 spec:
   rules:
-  - http:
+  - host: path1.jalema01-mern-app.com
+    http:
       paths:
-      - path: /mern-app
-        backend:
-          serviceName: k8s-mern-service
+      - backend:
+          serviceName: mern-app
           servicePort: 8080
+  - host: echo2.example.com
+    http:
+      paths:
+      - backend:
+          serviceName: echo2
+          servicePort: 80
       
