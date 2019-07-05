@@ -85,7 +85,7 @@ function addCompany(req, res){
             var myobj = {
                     name: req.body.name,
                     address: req.body.message,
-                    user_id: parseInt(authData.user.user_id, 10)
+                    user_id: authData.user.user_id
                 };
         
             dbo.collection("customers").insertOne(myobj, function(err, response) {
