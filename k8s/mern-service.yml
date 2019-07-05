@@ -4,7 +4,7 @@ metadata:
   name: k8s-mern-service
 spec:
   selector:
-    app: k8s-mern-app-55c9f6ff66-xm9rt
+    app: k8s-mern-app
   ports:
   - protocol: TCP
     port: 8080
