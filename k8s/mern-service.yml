@@ -6,6 +6,6 @@ spec:
   selector:
     app: k8s-mern-app-55c9f6ff66-xm9rt
   ports:
-  - protocol: tcp
+  - protocol: TCP
     port: 8080
     targetPort: 9376
