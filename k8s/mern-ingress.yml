@@ -10,10 +10,10 @@ spec:
       - backend:
           serviceName: mern-app
           servicePort: 8080
-  - host: echo2.example.com
+  - host: path1.jalema01-mern-app.com
     http:
       paths:
       - backend:
-          serviceName: echo2
-          servicePort: 80
+          serviceName: mern-app-back
+          servicePort: 5000
       

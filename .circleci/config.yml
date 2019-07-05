@@ -5,6 +5,7 @@ jobs:
       - image: circleci/buildpack-deps:stretch
     environment:
       IMAGE_NAME: jakelemar98/mern-app
+      BACK_IMAGE_NAME: jakelemar98/mern-app-backend
     working_directory: ~/app
     steps:
       - checkout
@@ -20,6 +21,17 @@ jobs:
             docker tag $IMAGE_NAME:latest $IMAGE_NAME:$CIRCLE_SHA1
             docker push $IMAGE_NAME:latest
             docker push $IMAGE_NAME:$CIRCLE_SHA1
+      - run:
+          name: Build Docker image
+          command: |
+            docker build -t $BACK_IMAGE_NAME:latest -f ./back-end/node-app/Dockerfile-prod ./back-end/node-app/
+      - run:
+          name: Push Docker Image
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker tag $BACK_IMAGE_NAME:latest $BACK_IMAGE_NAME:$CIRCLE_SHA1
+            docker push $BACK_IMAGE_NAME:latest
+            docker push $BACK_IMAGE_NAME:$CIRCLE_SHA1
       - run:
           name: Install envsubst
           command: |
