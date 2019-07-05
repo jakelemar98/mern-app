@@ -4,16 +4,16 @@ metadata:
   name: mern-ingress
 spec:
   rules:
-  - host: path1.jalema01-mern-app.com
+  - host: app.jalema01-mern-app.com
     http:
       paths:
       - backend:
           serviceName: mern-app
           servicePort: 8080
-  - host: path1.jalema01-mern-app.com
+  - host: backend.jalema01-mern-app.com
     http:
       paths:
       - backend:
           serviceName: mern-app-back
-          servicePort: 5000
+          servicePort: 8080
       
