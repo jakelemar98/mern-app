@@ -2,21 +2,11 @@ version: "2"
 
 services:
 
-  mongodb:
-    container_name: mongo
-    image: "mongo"
-    ports: 
-      - "27017:27017"
-    volumes:
-       - db-data:/data/db
-
   backend:
     container_name: node-app
     image: "jakelemar98/mern-app-backend:latest"
     ports: 
       - "5004:5000"
-    depends_on:
-      - mongodb
 
   frontend:
     container_name: react-app
@@ -25,6 +15,3 @@ services:
       - "9090:3000"
     depends_on:
       - backend
-
-volumes:
-  db-data:

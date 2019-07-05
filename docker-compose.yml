@@ -2,14 +2,6 @@ version: "2"
 
 services:
 
-  mongodb:
-    container_name: mongo
-    image: "mongo"
-    ports: 
-      - "27017:27017"
-    volumes:
-       - db-data:/data/db
-
   backend:
     container_name: node-app
     build:
@@ -19,8 +11,6 @@ services:
       - "5004:5000"
     volumes:
       - ./back-end/node-app/:/usr/src/app
-    depends_on:
-      - mongodb
     environment:
       NODE_ENV: development
 
@@ -35,6 +25,3 @@ services:
       - ./front-end/react-app/:/usr/src/app
     depends_on:
       - backend
-
-volumes:
-  db-data:

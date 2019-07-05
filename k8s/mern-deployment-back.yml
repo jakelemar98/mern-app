@@ -5,7 +5,7 @@ metadata:
 spec:
   ports:
   - port: 8080
-    targetPort: 80
+    targetPort: 5000
   selector:
     app: mern-app-back
 
@@ -31,4 +31,4 @@ spec:
         - name: mern-app-back
           image: jakelemar98/mern-app-backend:$COMMIT_SHA1
           ports:
-          - containerPort: 80
+          - containerPort: 5000

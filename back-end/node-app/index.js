@@ -2,7 +2,7 @@ const app = require('express')();
 const port = 5000
 
 var expressMongoDb = require('express-mongo-db');
-app.use(expressMongoDb('mongodb://mongodb:27017'));
+app.use(expressMongoDb('mongodb+srv://jakelemar98:Isu02201998@appcluster-btfvs.mongodb.net/test?retryWrites=true&w=majority'));
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
