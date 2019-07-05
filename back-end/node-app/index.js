@@ -1,6 +1,8 @@
 const app = require('express')();
 const port = 5000
 
+var cors = require('cors');
+app.use(cors());
 const Bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken')
 
@@ -34,7 +36,7 @@ function login(req, res){
                 return res.status(400).send({ message: "The password is invalid" });
             }
             jwt.sign({user: result}, 'secretKey', {expiresIn: '1h' }, (err, token) => {
-                res.json({
+                res.status(200).send({
                     token
                 })
             });         });
