@@ -11,6 +11,8 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// ROUTES
+
 app.post('/api/login', login);
 
 app.get('/api/companies', verifyToken, getCompanies);
@@ -18,6 +20,28 @@ app.get('/api/companies', verifyToken, getCompanies);
 app.post('/api/addCompany', verifyToken, addCompany);
 
 app.listen(process.env.PORT || 5000)
+
+// ROUTE FUNCTIONS
+
+function login(req, res){
+    try {
+        var dbo = req.db.db("app");
+        dbo.collection("users").findOne({ username: req.body.username }, function(err, result){
+            if(!result) {
+                return res.status(400).send({ message: "The username does not exist" });
+            }
+            if(!Bcrypt.compareSync(req.body.password, result.password)) {
+                return res.status(400).send({ message: "The password is invalid" });
+            }
+            jwt.sign({user: result}, 'secretKey', {expiresIn: '1h' }, (err, token) => {
+                res.json({
+                    token
+                })
+            });         });
+    } catch (error) {
+        res.status(500).send(error);
+    }
+}
 
 function verifyToken(req, res, next){
     const bearerHeader = req.headers['authorization'];
@@ -61,7 +85,7 @@ function addCompany(req, res){
             var myobj = {
                     name: req.body.name,
                     address: req.body.message,
-                    user_id: authData.user.id
+                    user_id: authData.user.user_id
                 };
         
             dbo.collection("customers").insertOne(myobj, function(err, response) {
@@ -74,23 +98,4 @@ function addCompany(req, res){
     });    
 };
 
-function login(req, res){
-    try {
-        var dbo = req.db.db("app");
-        dbo.collection("users").findOne({ username: req.body.username }, function(err, result){
-            if(!result) {
-                return res.status(400).send({ message: "The username does not exist" });
-            }
-            if(!Bcrypt.compareSync(req.body.password, result.password)) {
-                return res.status(400).send({ message: "The password is invalid" });
-            }
-            jwt.sign({user: result}, 'secretKey', {expiresIn: '1h' }, (err, token) => {
-                res.json({
-                    token
-                })
-            });         });
-    } catch (error) {
-        res.status(500).send(error);
-    }
-}
 module.exports = app;
