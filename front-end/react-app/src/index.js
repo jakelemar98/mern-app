@@ -9,7 +9,7 @@ const routing = (
 
     <div>
       <Route exact path="/" component={App} />
-      <Route path="/DSashboard" component={Dashboard} />
+      <Route path="/Dashboard" component={Dashboard} />
     </div>
 
   </Router>
