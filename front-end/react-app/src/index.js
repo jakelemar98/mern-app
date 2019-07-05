@@ -9,7 +9,11 @@ const routing = (
 
     <div>
       <Route exact path="/" component={App} />
+<<<<<<< HEAD
       <Route path="/Dashboard" component={Dashboard} />
+=======
+      <Route path="/dashboard" component={Dashboard} />
+>>>>>>> 200d0d177b788aa22fe4d1c9c1174f0c11958376
     </div>
 
   </Router>
