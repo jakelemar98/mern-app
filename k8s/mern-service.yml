@@ -1,15 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: k8s-mern-app
-  namespace: default
-  labels:
-    app: k8s-mern-app
+  name: k8s-mern-service
 spec:
-  type: ClusterIP
-  ports:
-    - port: 80
-      targetPort: http
-      name: http
   selector:
-    app: k8s-mern-app
+    app: k8s-mern-app-55c9f6ff66-xm9rt
+  ports:
+  - protocol: tcp
+    port: 8080
+    targetPort: 9376
