@@ -32,14 +32,15 @@ function login(req, res){
             if(!result) {
                 return res.status(400).send({ message: "The username does not exist" });
             }
-            if(!Bcrypt.compareSync(req.body.password, result.password)) {
+            if(!Bcrypt.compareSync(req.body.password, result.password)) {                
                 return res.status(400).send({ message: "The password is invalid" });
             }
             jwt.sign({user: result}, 'secretKey', {expiresIn: '1h' }, (err, token) => {
                 res.status(200).send({
                     token
                 })
-            });         });
+            });         
+        });
     } catch (error) {
         res.status(500).send(error);
     }
