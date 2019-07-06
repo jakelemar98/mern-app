@@ -9,7 +9,7 @@ chai.should();
 describe("GET /companies", () => {
     // Test to get all Companies
     it("should get all Companies", (done) => {
-            chai.request(app).get('/companies').end((err, res) => {
+            chai.request(app).get('/api/companies').end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
                 done();

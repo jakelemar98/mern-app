@@ -10,4 +10,4 @@ ENV NODE_ENV=Production
 RUN npm install
 
 EXPOSE 3000
-CMD [ "npm", "start" ]
+CMD [ "npm", "startProd" ]
