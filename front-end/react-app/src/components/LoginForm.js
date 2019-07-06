@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import auth from './auth';
 import Auth from './auth';
+import Nav from './Nav';
 
 export class LoginForm extends Component {
   state = {
@@ -17,16 +16,15 @@ export class LoginForm extends Component {
     this.setState({ [input]: e.target.value });
   };
   
-  login = e => {
-    console.log(this.state);
-    
-    e.preventDefault();
-    var url= "";
-    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"){
-      url = 'http://127.0.0.1:5004/api/login';
-    } else {
-      url = 'http://backend.jalema01-mern-app.com/api/login';
+  componentDidMount() {
+    if(Auth.isAuthenticated()){
+      this.props.history.push("/dashboard")
     }
+  }
+
+  login = e => {    
+    e.preventDefault();
+    var url = process.env.REACT_APP_API_URI + 'login'
     fetch(url, {
     	method: "POST",
       headers: {
@@ -61,7 +59,7 @@ export class LoginForm extends Component {
     return (
       <MuiThemeProvider>
         <React.Fragment>
-          <AppBar title="Enter User Credintials" />
+          <Nav menuName={"App Login"}/>
           <TextField
             hintText="Enter Your Username"
             floatingLabelText="Username"

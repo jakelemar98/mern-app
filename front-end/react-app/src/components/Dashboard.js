@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import auth from './auth'
+import Nav from './Nav'
 
 export class Dashboard extends Component {
     constructor(props) {
@@ -13,8 +13,6 @@ export class Dashboard extends Component {
     
       componentDidMount() {
         var url = process.env.REACT_APP_API_URI + 'companies';
-
-        console.log(url, process.env.NODE_ENV)
 
         var token = localStorage.getItem('token');
 
@@ -49,25 +47,16 @@ export class Dashboard extends Component {
           return <div>Loading...</div>;
         } else {
             return (
-                <div>
-                <h1>App Dashboard</h1>
+              <div>
+                <Nav menuName="App Dashboard" history={this.props.history}/>
                 <ul>
-                    {items.map(item => (
-                        <li key={item.name}>
-                        {item.name} {item.price}
+                    {items.map((item) => (
+                        <li key={item._id}>
+                          {item.name}
                         </li>
                     ))}
                 </ul>
-                    <button onClick={
-                        () => {
-                            auth.logout( () => {
-                                this.props.history.push("/")
-                            })
-                        }
-                    }>
-                        Logout
-                    </button>
-                </div>
+              </div>
             )
         }
     }

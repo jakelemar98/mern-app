@@ -9,7 +9,7 @@ class App extends Component {
         <LoginForm/>
       </div>
     );
-  }
+  } 
 }
 
 export default App;
