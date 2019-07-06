@@ -12,14 +12,10 @@ export class Dashboard extends Component {
       }
     
       componentDidMount() {
-        var url= "";
+        var url = process.env.REACT_APP_API_URI + 'companies';
 
-        if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"){
-          url = 'http://127.0.0.1:5004/api/companies';
-        } else {
-          url = 'http://backend.jalema01-mern-app.com/api/companies';
-        }
-
+        console.log(url)
+        
         var token = localStorage.getItem('token');
 
         fetch(url, {
@@ -35,9 +31,6 @@ export class Dashboard extends Component {
                     items: result.results
                 });                
             },
-            // Note: it's important to handle errors here
-            // instead of a catch() block so that we don't swallow
-            // exceptions from actual bugs in components.
             (error) => {
               this.setState({
                 isLoaded: true,
