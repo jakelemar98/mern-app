@@ -17,6 +17,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/api/login', login);
 
+app.get('/api/user', verifyToken, getUser)
+
 app.get('/api/companies', verifyToken, getCompanies);
 
 app.post('/api/addCompany', verifyToken, addCompany);
@@ -48,7 +50,7 @@ function login(req, res){
 
 function verifyToken(req, res, next){
     const bearerHeader = req.headers['authorization'];
-
+    
     if(typeof bearerHeader !== 'undefined'){
         const bearer = bearerHeader.split(" ");
 
@@ -57,9 +59,20 @@ function verifyToken(req, res, next){
         req.token = bearToken;
 
         next();
-    } else { 
+    } else {        
         res.sendStatus(403);
     }
+}
+
+function getUser(req, res){
+    jwt.verify(req.token, 'secretKey', (err, authData) => {
+        if (err){            
+            res.sendStatus(403)
+        } else {
+            delete authData.user["password"]
+            res.json(authData.user)
+        }
+    });
 }
 
 function getCompanies(req, res){    

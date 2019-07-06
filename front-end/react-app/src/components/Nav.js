@@ -31,6 +31,10 @@ export default function MenuAppBar(props) {
         setAnchorEl(event.currentTarget);
     }
 
+    function loadProfile(){
+        props.history.push("/account")
+    }
+
     function logout(){
         auth.logout( () => {
             props.history.push("/")
@@ -77,8 +81,7 @@ export default function MenuAppBar(props) {
                     open={open}
                     onClose={handleClose}
                 >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
+                    <MenuItem onClick={loadProfile}>Profile</MenuItem>
                     <MenuItem onClick={logout}>Logout</MenuItem>
                 </Menu>
                 </div>
