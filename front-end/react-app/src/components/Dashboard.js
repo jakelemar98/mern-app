@@ -14,8 +14,8 @@ export class Dashboard extends Component {
       componentDidMount() {
         var url = process.env.REACT_APP_API_URI + 'companies';
 
-        console.log(url)
-        
+        console.log(url, process.env.NODE_ENV)
+
         var token = localStorage.getItem('token');
 
         fetch(url, {
@@ -42,7 +42,6 @@ export class Dashboard extends Component {
     
       render() {
         const { error, isLoaded, items } = this.state;
-        console.log(this.state);
         
         if (error) {
           return <div>Error: {error.message}</div>;
