@@ -19,6 +19,8 @@ app.post('/api/login', login);
 
 app.get('/api/user', verifyToken, getUser)
 
+app.post('/api/updateUser', verifyToken, updateUser)
+
 app.get('/api/companies', verifyToken, getCompanies);
 
 app.post('/api/addCompany', verifyToken, addCompany);
@@ -70,7 +72,40 @@ function getUser(req, res){
             res.sendStatus(403)
         } else {
             delete authData.user["password"]
+            
             res.json(authData.user)
+        }
+    });
+}
+
+function updateUser(req, res){
+    jwt.verify(req.token, 'secretKey', (err, authData) => {
+        if (err){            
+            res.sendStatus(403)
+        } else {
+            var dbo = req.db.db("app");
+            
+            var myobj = {
+                    $set: {
+                        name: req.body.name,
+                        username: req.body.username
+                    }
+                };
+            
+            var myquery = { user_id: req.body.id };
+
+            dbo.collection("users").updateOne(myquery, myobj, {upsert: true}).then((obj) => {
+                console.log('Updated - ' + obj);
+                dbo.collection("users").findOne({ username: req.body.username }, function(err, result){                    
+                    jwt.sign({user: result}, 'secretKey', {expiresIn: '1h' }, (err, token) => {
+                        res.status(200).send({
+                            token
+                        })
+                    });
+                })
+            }).catch((err) => {
+                res.sendStatus(403)
+            })
         }
     });
 }
@@ -83,6 +118,7 @@ function getCompanies(req, res){
             var dbo = req.db.db("mydb");
     
             dbo.collection('customers').find().toArray( function(err, results) {
+                if (err) throw err;
                 res.json({
                     results
                 })

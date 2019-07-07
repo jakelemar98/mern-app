@@ -15,14 +15,25 @@ export class Account extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          error: null,
-          isLoaded: false,
-          user: [],
-          disabled: true
+            error: null,
+            isLoaded: false,
+            user: [],
+            disabled: true,
+            label: "Edit Account",
+            username: "",
+            first: "",
+            last: "",
+            display: "none"
         };
+
+        this.initialState = this.state
     }
 
     componentDidMount() {
+      this.getUserInfo()
+    }
+
+    getUserInfo = e => {
         var url = process.env.REACT_APP_API_URI + 'user'
 
         var token = localStorage.getItem("token");
@@ -34,15 +45,16 @@ export class Account extends Component {
           }
         })
           .then(res => res.json())
-          .then( (result) => {
+          .then( (result) => {                                
                 var name = result.name.split(" ");
                 var first = name[0];
                 var last = name[1];
-                result.first = first;
-                result.last = last;
                 this.setState({
                     isLoaded: true,
-                    user: result
+                    user: result,
+                    first: first,
+                    last: last,
+                    username: result.username
                 });                
             },
             (error) => {
@@ -55,12 +67,97 @@ export class Account extends Component {
     }
 
     enableFields = e => {
+        var isDisabled;
+        var label;
+        if (this.state.disabled){
+            isDisabled =  false;
+            label = "Cancel Changes";
+            this.setState({
+                display: "block"
+            })
+        } else {
+            var name = this.state.user.name.split(" ");
+            var firstSet = name[0];
+            var lastSet = name[1];
+            this.setState({
+                username: this.state.user.username,
+                first: firstSet,
+                last: lastSet,
+                display: "none"
+            })
+            isDisabled = true;
+            label = "Edit Account";
+        }
         this.setState({
-            disabled: false
-        }) 
+            disabled: isDisabled,
+            label: label
+        })         
     }
+
+    handleChange = (field, e) => {
+        switch(field){
+            case "username":
+                this.setState({ username: e.target.value})
+                break;
+            case "first":
+                this.setState({ first: e.target.value})
+                break;
+            case "last":
+                this.setState({ last: e.target.value})
+                break;
+            default:
+                break;
+        }
+    }
+
+    updateUser = e => {
+        var name = this.state.user.name.split(" ");
+        var first = name[0];
+        var last = name[1];
+        var username = this.state.user.username
+        console.log(this.state.user._id);
+        
+
+        if( (first !== this.state.first) || (last !== this.state.last) || (username !== this.state.username) ){
+            var url = process.env.REACT_APP_API_URI + 'updateUser'
+
+            var token = localStorage.getItem("token");
+
+            var fullname = this.state.first + " " + this.state.last
+            console.log(fullname);
+            
+            fetch(url, {
+                method: "POST",
+            headers: {
+                'Authorization': 'bearer ' + token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }, body: JSON.stringify({
+                username: this.state.username,
+                name: fullname,
+                id: this.state.user.user_id
+              })
+            })
+            .then((response) => {
+                if (response.status === 200){
+                  return response.json()
+                } else {
+                  throw new Error(response.json())
+                }
+              })
+              .then((responseData) => {                  
+                localStorage.setItem('token', responseData.token);
+                console.log("here");
+                this.setState(this.initialState)
+                this.getUserInfo()
+              })
+        } else {
+            alert("Please Change A Value")
+        }
+    }
+
     render() {
-        const { error, isLoaded, user } = this.state;
+        const { error, isLoaded, username, first, last, display } = this.state;
 
         // var userArr = user.name.split(" ");
         // const firstname = userArr[0];
@@ -90,7 +187,8 @@ export class Account extends Component {
                                             <TextField
                                                 hintText="Username"
                                                 floatingLabelText="Username"
-                                                defaultValue={user.username}
+                                                value={username}
+                                                onChange={(e) => this.handleChange("username", e)}
                                                 disabled={this.state.disabled}
                                             />
                                             <br />
@@ -98,7 +196,8 @@ export class Account extends Component {
                                                 hintText="First Name"
                                                 type="text"
                                                 floatingLabelText="First Name"
-                                                defaultValue={user.first}
+                                                value={first}
+                                                onChange={(e) => this.handleChange("first", e)}
                                                 disabled={this.state.disabled}
                                             />
                                             <br />
@@ -106,7 +205,8 @@ export class Account extends Component {
                                                 hintText="Last Name"
                                                 type="text"
                                                 floatingLabelText="Last Name"
-                                                defaultValue={user.last}
+                                                value={last}
+                                                onChange={(e) => this.handleChange("last", e)}
                                                 disabled={this.state.disabled}
                                             />
                                             <br />
@@ -114,7 +214,7 @@ export class Account extends Component {
                                     </CardActionArea>
                                     <CardActions style={{ display:'flex', justifyContent:'center', backgroundColor:'#3f51b5' }}>
                                     <RaisedButton
-                                        label="Edit Account"
+                                        label={this.state.label}
                                         secondary={true}
                                         style={styles.button}
                                         onClick={this.enableFields}
@@ -122,7 +222,8 @@ export class Account extends Component {
                                     <RaisedButton
                                         label="Save Account"
                                         primary={true}
-                                        style={styles.button}
+                                        style={{margin: 15, display: display}}
+                                        onClick={this.updateUser}
                                     />
                                     </CardActions>
                                 </Card>
@@ -136,7 +237,11 @@ export class Account extends Component {
 }
 const styles = {
     button: {
-      margin: 15
+        margin: 15,
+      },
+    buttonAction: {
+      margin: 15,
+      display: "none"
     },
     input: {
         color: "white"

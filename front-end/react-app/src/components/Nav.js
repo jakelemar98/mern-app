@@ -35,6 +35,10 @@ export default function MenuAppBar(props) {
         props.history.push("/account")
     }
 
+    function loadDashboard(){
+        props.history.push("/dashboard")
+    }
+
     function logout(){
         auth.logout( () => {
             props.history.push("/")
@@ -82,6 +86,7 @@ export default function MenuAppBar(props) {
                     onClose={handleClose}
                 >
                     <MenuItem onClick={loadProfile}>Profile</MenuItem>
+                    <MenuItem onClick={loadDashboard}>Dashboard</MenuItem>
                     <MenuItem onClick={logout}>Logout</MenuItem>
                 </Menu>
                 </div>
