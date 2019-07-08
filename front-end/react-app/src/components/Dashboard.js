@@ -48,7 +48,7 @@ export class Dashboard extends Component {
         } else {
             return (
               <div>
-                <Nav menuName="App Dashboard" history={this.props.history}/>
+                <Nav menuName="App Dashboard" history={this.props.history} selected={[false, true]}/>
                 <ul>
                     {items.map((item) => (
                         <li key={item._id}>

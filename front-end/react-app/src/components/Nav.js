@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function MenuAppBar(props) {
+export default function MenuAppBar(props) {    
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -85,8 +85,8 @@ export default function MenuAppBar(props) {
                     open={open}
                     onClose={handleClose}
                 >
-                    <MenuItem onClick={loadProfile}>Profile</MenuItem>
-                    <MenuItem onClick={loadDashboard}>Dashboard</MenuItem>
+                    <MenuItem selected={props.selected[0]} onClick={loadProfile}>Profile</MenuItem>
+                    <MenuItem selected={props.selected[1]} onClick={loadDashboard}>Dashboard</MenuItem>
                     <MenuItem onClick={logout}>Logout</MenuItem>
                 </Menu>
                 </div>

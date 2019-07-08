@@ -172,7 +172,7 @@ export class Account extends Component {
                 <div>
                     <MuiThemeProvider>
                         <React.Fragment>
-                            <Nav menuName="Account Information" history={this.props.history}/>
+                            <Nav menuName="Account Information" history={this.props.history} selected={[true, false]} />
                             <br></br>
                             <div style={{ display:'flex', justifyContent:'center' }}>
                                 <Card style={{width:720}}>
@@ -238,10 +238,6 @@ export class Account extends Component {
 const styles = {
     button: {
         margin: 15,
-      },
-    buttonAction: {
-      margin: 15,
-      display: "none"
     },
     input: {
         color: "white"
