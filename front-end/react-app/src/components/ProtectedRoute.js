@@ -9,10 +9,14 @@ export const ProtectedRoute = ({
   return (
     <Route
       {...rest}
-      render={props => {        
+      render={props => {
+        console.log("Auth is " + auth.isAuthenticated());
+                
         if (auth.isAuthenticated()) {
           return <Component {...props} />;
-        } else {          
+        } else {
+          console.log("redirecting");
+                    
           return (
             <Redirect
               to={{
