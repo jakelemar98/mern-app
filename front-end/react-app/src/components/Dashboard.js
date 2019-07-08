@@ -85,7 +85,7 @@ export class Dashboard extends Component {
 
       render() {
         const { error, items, gitItems,dashError, gitError, dashIsLoaded, gitIsLoaded, baseGitUrl } = this.state;
-        
+
         if (dashError || gitError) {
           return <div>Dash Error: {error.message} Git Error: {gitError.message}</div>;
         } else if (!dashIsLoaded || !gitIsLoaded) {
@@ -103,6 +103,7 @@ export class Dashboard extends Component {
                 </ul>
                 <br></br>
                 <div>
+ 
                   <Grid container spacing={3}>
                   {gitItems.map((item) => (
                     <Grid item xs={4} key={item.name}>
@@ -135,29 +136,32 @@ export class Dashboard extends Component {
         }
     }
 }
-
 const styles = {
-  card: {
-    display: 'flex',
-  },
-  details: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  content: {
-    flex: '1 0 auto',
-  },
-  cover: {
-    width: 151,
-  },
-  controls: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  playIcon: {
-    height: 38,
-    width: 38,
-  },
+    root: {
+      padding: 15
+    },
+    card: {
+      display: 'flex',
+    },
+    details: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    content: {
+      flex: '1 0 auto',
+    },
+    cover: {
+      width: 151,
+    },
+    controls: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+    playIcon: {
+      height: 38,
+      width: 38,
+    }
 }
+
 
 export default Dashboard

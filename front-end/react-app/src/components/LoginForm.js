@@ -59,7 +59,7 @@ export class LoginForm extends Component {
     return (
       <MuiThemeProvider>
         <React.Fragment>
-          <Nav menuName={"Application Login!"}/>
+          <Nav menuName={"Application Login!"} selected={[0,0]}/>
           <TextField
             hintText="Enter Your Username"
             floatingLabelText="Username"
