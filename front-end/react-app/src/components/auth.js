@@ -21,6 +21,8 @@ class Auth {
       if (token){
         return checkAuth(url, token).then( (response) => {        
           this.authenticated = response
+          console.log(this.authenticated);
+          
           return this.authenticated
         }) ;
       } else {
@@ -44,9 +46,7 @@ class Auth {
         },
         (error) => {
           localStorage.removeItem('token')
-          var authenticated = false;
-          console.log('here in error');
-          
+          var authenticated = false;          
           return authenticated;
         }
       )
