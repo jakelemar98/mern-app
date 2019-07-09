@@ -108,7 +108,6 @@ export class Dashboard extends Component {
             }
           )
       }
-
       render() {
         const { error, todos, gitItems,dashError, gitError, dashIsLoaded, gitIsLoaded, baseGitUrl } = this.state;
 
