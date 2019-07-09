@@ -14,10 +14,13 @@ export class Dashboard extends Component {
         this.state = {
           dashError: null,
           gitError: null,
+          userError: null,
           dashIsLoaded: false,
           gitIsLoaded: false,
+          userIsLoaded: false,
           todos: [],
           gitItems: [],
+          users: [],
           baseGitUrl: "https://github.com/jakelemar98/mern-app/tree/"
         };
       }
@@ -25,6 +28,7 @@ export class Dashboard extends Component {
       componentDidMount() {
         this.fetchDashItems();
         this.fetchGitRepos();
+        this.fetchUsers();
       }
       
       fetchDashItems = e => {
@@ -76,6 +80,34 @@ export class Dashboard extends Component {
           )
       }
 
+      fetchUsers = e => {
+        var url = process.env.REACT_APP_API_URI + 'users';
+
+        var token = localStorage.getItem('token');
+
+        fetch(url, {
+            method: "GET",
+          headers: {
+            'Authorization': 'bearer ' + token
+          }
+        })
+          .then(res => res.json())
+          .then( (result) => {
+            console.log(result);
+            
+                this.setState({
+                    userIsLoaded: true,
+                    users: result.results
+                });                
+            },
+            (error) => {
+              this.setState({
+                userIsLoaded: true,
+                userError: error
+              });
+            }
+          )
+      }
       render() {
         const { error, todos, gitItems,dashError, gitError, dashIsLoaded, gitIsLoaded, baseGitUrl } = this.state;
 
