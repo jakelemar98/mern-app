@@ -38,9 +38,9 @@ export class LoginForm extends Component {
     })
     .then((response) => {
       if (response.status === 200){
-        return response.status()
+        return response.status
       } else {
-        throw new Error(response)
+        throw new Error(response.status)
       }
     })
     .then((responseData) => {
