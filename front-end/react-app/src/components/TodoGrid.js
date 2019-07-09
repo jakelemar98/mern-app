@@ -10,6 +10,10 @@ import { withStyles } from '@material-ui/core/styles';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogContent from '@material-ui/core/DialogContent';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItem from '@material-ui/core/ListItem';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
 
 const styles = {
     root: {
@@ -40,7 +44,9 @@ export default function TodoGrid(props) {
     const [open, setOpen] = React.useState(false);
     const [data, setData] = React.useState({});
     function handleClickOpen(index) {
-        setData(todos[index])        
+        setData(todos[index])
+        console.log(data);
+              
         setOpen(true);
     }
   
@@ -97,12 +103,33 @@ function SimpleDialog(props) {
 
   return (
     <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" {...other}>
-      <DialogTitle id="simple-dialog-title"> {props.data.title} </DialogTitle>
-      <DialogContent dividers>
-            <Typography gutterBottom>
-             {props.data.message}
-            </Typography>
-            
+        <DialogTitle id="todoModal"> {props.data.title} </DialogTitle>
+            <DialogContent dividers>
+                <List>
+                    <ListItem button>
+                        <ListItemText primary="Message" secondary={props.data.message} />
+                    </ListItem>
+                    <Divider />
+                    <ListItem button>
+                        <ListItemText primary="Priority" secondary={props.data.priority} />
+                    </ListItem>
+                    <Divider />
+                    <ListItem button>
+                        <ListItemText primary="status" secondary={props.data.status} />
+                    </ListItem>
+                    <Divider />
+                    <ListItem button>
+                        <ListItemText primary="Estimated Time" secondary={props.data.est_time + " hrs"}  />
+                    </ListItem>
+                    <Divider />
+                    <ListItem button>
+                        <ListItemText primary="Inteded Worker" secondary={props.data.sugg_worker} />
+                    </ListItem>
+                    <Divider />
+                    <ListItem button>
+                        <ListItemText primary="Created By" secondary={props.data.user_created} />
+                    </ListItem>
+                </List>    
           </DialogContent>
     </Dialog>
   );
