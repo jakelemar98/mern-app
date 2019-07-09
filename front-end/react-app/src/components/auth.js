@@ -20,9 +20,7 @@ class Auth {
 
       if (token){
         return checkAuth(url, token).then( (response) => {        
-          this.authenticated = response
-          console.log(this.authenticated);
-          
+          this.authenticated = response          
           return this.authenticated
         }) ;
       } else {
