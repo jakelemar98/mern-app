@@ -16,7 +16,7 @@ export class Dashboard extends Component {
           gitError: null,
           dashIsLoaded: false,
           gitIsLoaded: false,
-          items: [],
+          todos: [],
           gitItems: [],
           baseGitUrl: "https://github.com/jakelemar98/mern-app/tree/"
         };
@@ -28,7 +28,7 @@ export class Dashboard extends Component {
       }
       
       fetchDashItems = e => {
-        var url = process.env.REACT_APP_API_URI + 'companies';
+        var url = process.env.REACT_APP_API_URI + 'todos';
 
         var token = localStorage.getItem('token');
 
@@ -42,7 +42,7 @@ export class Dashboard extends Component {
           .then( (result) => {
                 this.setState({
                     dashIsLoaded: true,
-                    items: result.results
+                    todos: result.results
                 });                
             },
             (error) => {
@@ -61,9 +61,7 @@ export class Dashboard extends Component {
             method: "GET"
         })
           .then(res => res.json())
-          .then( (result) => {
-              console.log(result);
-              
+          .then( (result) => {              
               this.setState({
                   gitIsLoaded: true,
                   gitItems: result
@@ -78,13 +76,8 @@ export class Dashboard extends Component {
           )
       }
 
-      goToBranch = (e, branch) => {
-        console.log(branch);
-        
-      }
-
       render() {
-        const { error, items, gitItems,dashError, gitError, dashIsLoaded, gitIsLoaded, baseGitUrl } = this.state;
+        const { error, todos, gitItems,dashError, gitError, dashIsLoaded, gitIsLoaded, baseGitUrl } = this.state;
 
         if (dashError || gitError) {
           return <div>Dash Error: {error.message} Git Error: {gitError.message}</div>;
@@ -94,17 +87,33 @@ export class Dashboard extends Component {
             return (
               <div>
                 <Nav menuName="App Dashboard" history={this.props.history} selected={[false, true]}/>
-                <ul>
-                    {items.map((item) => (
-                        <li key={item._id}>
-                          {item.name}
-                        </li>
+                  <Grid container spacing={3} style={styles.root}>
+                    {todos.map((todo) => (
+                      <Grid item xs={4} key={todo._id}>
+                        <Card style={ styles.card } >
+                          <div style={styles.details}>
+                            <CardContent style={styles.content}>
+                              <Typography component="h5" variant="h5">
+                                {todo.title}
+                              </Typography>
+                              <Typography variant="subtitle1" color="textSecondary">
+                                {todo.sugg_worker}
+                              </Typography>
+                            </CardContent>
+                          </div>
+                          <CardMedia
+                            style={styles.cover}
+                            image={gitImg}
+                            title="Live from space album cover"
+                          />
+                        </Card>
+                      </Grid>
                     ))}
-                </ul>
+                  </Grid>
                 <br></br>
                 <div>
  
-                  <Grid container spacing={3}>
+                  <Grid container spacing={3} style={styles.root}>
                   {gitItems.map((item) => (
                     <Grid item xs={4} key={item.name}>
                       <a href={baseGitUrl + item.name} >
@@ -142,6 +151,7 @@ const styles = {
     },
     card: {
       display: 'flex',
+      height: 120
     },
     details: {
       display: 'flex',

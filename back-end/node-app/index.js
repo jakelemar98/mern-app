@@ -21,34 +21,9 @@ app.get('/api/user', verifyToken, getUser)
 
 app.post('/api/updateUser', verifyToken, updateUser)
 
-app.get('/api/companies', verifyToken, getCompanies);
+app.get('/api/todos', verifyToken, getTodos);
 
-app.post('/api/addCompany', verifyToken, addCompany);
-
-app.post("/register",  (req, res) => {
-    try {
-        req.body.password = Bcrypt.hashSync(req.body.password, 10);
-        var dbo = req.db.db("app");
-        
-        var myobj = {
-                name: req.body.name,
-                user_id: req.body.user_id,
-                username: req.body.username,
-                password: req.body.password
-            };
-    
-        dbo.collection("users").insertOne(myobj, function(err, response) {
-            if (err) throw err;
-            res.json({
-                response
-            });
-        });
-    } catch (error) {
-        console.log(error);
-        
-        res.sendStatus(500);
-    }
-  });
+app.post('/api/addTodo', verifyToken, addTodo);
 
 app.listen(process.env.PORT || 5000)
 
@@ -135,14 +110,14 @@ function updateUser(req, res){
     });
 }
 
-function getCompanies(req, res){    
+function getTodos(req, res){    
     jwt.verify(req.token, 'secretKey', (err, authData) => {
         if (err) {
             res.sendStatus(403)
         } else {
-            var dbo = req.db.db("mydb");
+            var dbo = req.db.db("app");
     
-            dbo.collection('customers').find().toArray( function(err, results) {
+            dbo.collection('todos').find().toArray( function(err, results) {
                 if (err) throw err;
                 res.json({
                     results
@@ -152,20 +127,25 @@ function getCompanies(req, res){
     });
 };
 
-function addCompany(req, res){
+function addTodo(req, res){
     jwt.verify(req.token, 'secretKey', (err, authData) => {
         if (err) {
             res.sendStatus(403)
         } else {
-            var dbo = req.db.db("mydb");
+            var dbo = req.db.db("app");
             
             var myobj = {
-                    name: req.body.name,
-                    address: req.body.message,
-                    user_id: authData.user.user_id
+                    title: req.body.title,
+                    message: req.body.message,
+                    est_time: req.body.est_time,
+                    sugg_worker: req.body.sugg_worker,
+                    status: req.body.status,
+                    priority: req.body.priority,
+                    category: req.body.category,
+                    user_created: authData.user.user_id
                 };
         
-            dbo.collection("customers").insertOne(myobj, function(err, response) {
+            dbo.collection("todos").insertOne(myobj, function(err, response) {
                 if (err) throw err;
                 res.json({
                     authData
