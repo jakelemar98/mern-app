@@ -118,7 +118,6 @@ export class Dashboard extends Component {
               <div>
                 <Nav menuName="App Dashboard" history={this.props.history} selected={[false, true]}/>
                 <Todo todos={todos} users={users}/>
-                <br></br>
                 <Git gitItems={gitItems} url={baseGitUrl} />
               </div>
             )
