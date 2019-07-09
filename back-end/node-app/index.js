@@ -19,6 +19,8 @@ app.post('/api/login', login);
 
 app.get('/api/user', verifyToken, getUser)
 
+app.get('/api/users', verifyToken, getUsers)
+
 app.post('/api/updateUser', verifyToken, updateUser)
 
 app.get('/api/todos', verifyToken, getTodos);
@@ -74,6 +76,23 @@ function getUser(req, res){
             delete authData.user["password"]
             
             res.json(authData.user)
+        }
+    });
+}
+
+function getUsers(req, res){
+    jwt.verify(req.token, 'secretKey', (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+        } else {
+            var dbo = req.db.db("app");
+    
+            dbo.collection('users').find().toArray( function(err, results) {
+                if (err) throw err;
+                res.json({
+                    results
+                })
+            });
         }
     });
 }
