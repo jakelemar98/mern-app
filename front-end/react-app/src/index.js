@@ -5,6 +5,7 @@ import { Route, BrowserRouter, Switch } from 'react-router-dom'
 import Dashboard from './components/Dashboard'
 import LoginForm from './components/LoginForm';
 import './App.css';
+import 'font-awesome/css/font-awesome.min.css';
 import Account from './components/Account'
 function App() {
   return (

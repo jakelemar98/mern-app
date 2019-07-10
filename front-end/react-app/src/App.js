@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import 'font-awesome/css/font-awesome.min.css';
 import { LoginForm } from './components/LoginForm';
 
 class App extends Component {
