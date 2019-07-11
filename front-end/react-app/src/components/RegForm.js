@@ -4,8 +4,11 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Auth from './auth';
 import Nav from './Nav';
+import LoginForm from './LoginForm';
 
-export class LoginForm extends Component {
+
+
+export class RegForm extends Component {
   state = {
     username: '',
     password: ''
@@ -51,11 +54,6 @@ export class LoginForm extends Component {
     })
     .catch(error => console.warn("big error" + error));    
   };
-
-  register(){
-    this.props.history.push("/regForm")
-
-  }
   render() {
     const { username, password } = this.state;
     const values = { username, password };
@@ -86,12 +84,6 @@ export class LoginForm extends Component {
             style={styles.button}
             onClick={this.login}
           />
-          <RaisedButton
-            label="Register"
-            primary={true}
-            style={styles.button}
-            onClick={this.Reg}
-          />
         </React.Fragment>
       </MuiThemeProvider>
     );
@@ -102,5 +94,3 @@ const styles = {
     margin: 15
   }
 };
-
-export default LoginForm;
