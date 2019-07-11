@@ -52,9 +52,6 @@ export class LoginForm extends Component {
     .catch(error => console.warn("big error" + error));    
   };
 
-  register(){
-    window.location.href = "/regForm"
-  }
   render() {
     const { username, password } = this.state;
     const values = { username, password };
@@ -89,7 +86,9 @@ export class LoginForm extends Component {
             label="Register"
             primary={true}
             style={styles.button}
-            onClick={this.register}
+            onClick={ () => {
+              this.props.history.push("/regForm")
+            }}
           />
         </React.Fragment>
       </MuiThemeProvider>
