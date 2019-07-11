@@ -95,4 +95,4 @@ const styles = {
   }
 };
 
-export default regForm;
+export default RegForm;
