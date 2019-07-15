@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Nav from './Nav'
-import Todo from './TodoGrid'
+import Todo from './Todos/TodoGrid'
 import Git from './GitGrid'
 
 export class Dashboard extends Component {
