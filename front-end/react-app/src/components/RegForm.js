@@ -93,6 +93,7 @@ export class RegForm extends Component {
             primary={true}
             style={styles.button}
             onClick={this.register}
+            disabled={!this.state.name || !this.state.username || this.state.password}
           />
         </React.Fragment>
       </MuiThemeProvider>
