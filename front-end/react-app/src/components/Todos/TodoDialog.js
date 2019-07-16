@@ -25,14 +25,6 @@ export default function TodoDialog(props) {
     const [display, setDisplay] = React.useState("block");
     const [displayCanUp, setDisplayCanUp] = React.useState("none");
     const [disabled, setDisabled] = React.useState(true)
-
-
-export default function TodoDialog(props) {
-    const { onClose, selectedValue, ...other } = props;
-    const priorityArr = ["green", "orange", "red"];
-    const priorityWordingArr = ['Low Priority - No need to stress', 'Medium Priority - Uhm might want to look at this', 'HIGH PRIORITY - THIS NEEDS TO GET DONE ASAP'];
-    const [display, setDisplay] = React.useState("block");
-    const [displayCanUp, setDisplayCanUp] = React.useState("none");
     const [snackState, setSnackState] = React.useState({
         open: false,
         vertical: 'top',
