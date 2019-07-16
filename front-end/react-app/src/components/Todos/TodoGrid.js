@@ -4,7 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import todoImg from '../static/images/todos.png';
+import todoImg from '../../static/images/todos.png';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TodoDialog from './TodoDialog'
 
@@ -55,11 +55,9 @@ export default function TodoGrid(props) {
                             <Card style={ styles.card } >
                                 <div style={styles.details}>
                                     <CardContent style={styles.content}>
-                                        <a onClick={() => handleClickOpen(index)}>
-                                            <Typography component="h4" variant="h4">
-                                                {todo.title}
-                                            </Typography>
-                                        </a>
+                                        <Typography onClick={() => handleClickOpen(index)} component="h4" variant="h4">
+                                            {todo.title}
+                                        </Typography>
                                     
                                         <Typography variant="subtitle1" color="textSecondary">
                                             Assigned: {users[todo.sugg_worker]}
