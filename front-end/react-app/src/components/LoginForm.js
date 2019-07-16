@@ -81,6 +81,7 @@ export class LoginForm extends Component {
             primary={true}
             style={styles.button}
             onClick={this.login}
+            disabled={!this.state.password || !this.state.username}
           />
           <RaisedButton
             label="Register"

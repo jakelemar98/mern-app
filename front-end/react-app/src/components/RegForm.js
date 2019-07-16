@@ -4,14 +4,16 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Auth from './auth';
 import Nav from './Nav';
-import LoginForm from './LoginForm';
+
 
 
 
 export class RegForm extends Component {
   state = {
     username: '',
-    password: ''
+    password: '',
+    user_id: '',
+    name: ''
   };
 
   // Handle fields change
@@ -25,9 +27,9 @@ export class RegForm extends Component {
     }
   }
 
-  login = e => {    
+  register = e => {    
     e.preventDefault();
-    var url = process.env.REACT_APP_API_URI + 'login'
+    var url = process.env.REACT_APP_API_URI + 'register'
     fetch(url, {
     	method: "POST",
       headers: {
@@ -35,12 +37,15 @@ export class RegForm extends Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+            name: this.state.name,
+            // user_id: this.state.user_id,
             username: this.state.username,
             password: this.state.password,
           })
     })
     .then((response) => {
       if (response.status === 200){
+        this.props.history.push("/dashboard")
         return response.json()
       } else {
         throw new Error(response.status)
@@ -49,20 +54,25 @@ export class RegForm extends Component {
     .then((responseData) => {
       localStorage.setItem('token', responseData.token);
       Auth.login( () => {
-        this.props.history.push("/dashboard")
       });
     })
     .catch(error => console.warn("big error" + error));    
   };
   render() {
-    const { username, password } = this.state;
-    const values = { username, password };
+    const { username, password, name} = this.state;
+    const values = { username, password, name };
     const handleChange = this.handleChange;
 
     return (
       <MuiThemeProvider>
         <React.Fragment>
           <Nav menuName={"Register"} selected={[0,0]}/>
+          <TextField
+            hintText="Enter Your Name"
+            floatingLabelText="Full Name"
+            onChange={handleChange('name')}
+          />
+          <br/>
           <TextField
             hintText="Enter Your Username"
             floatingLabelText="Username"
@@ -79,10 +89,10 @@ export class RegForm extends Component {
           />
           <br />
           <RaisedButton
-            label="Login"
+            label="Register"
             primary={true}
             style={styles.button}
-            onClick={this.login}
+            onClick={this.register}
           />
         </React.Fragment>
       </MuiThemeProvider>
