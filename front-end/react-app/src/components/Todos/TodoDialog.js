@@ -3,7 +3,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import DialogActions from '@material-ui/core/DialogActions';
-import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -14,6 +13,18 @@ import { withStyles } from '@material-ui/core/styles';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Snackbar from '@material-ui/core/Snackbar';
 import Portal from '@material-ui/core/Portal';
+import Priorities from './Priorities';
+import Status from './Status';
+import UserSelect from './UserSelect';
+import Message from './TextFields'
+
+const updatedValues   = [];
+
+export default function TodoDialog(props) {
+    const { onClose, selectedValue, ...other } = props;
+    const [display, setDisplay] = React.useState("block");
+    const [displayCanUp, setDisplayCanUp] = React.useState("none");
+    const [disabled, setDisabled] = React.useState(true)
 
 
 export default function TodoDialog(props) {
@@ -22,88 +33,105 @@ export default function TodoDialog(props) {
     const priorityWordingArr = ['Low Priority - No need to stress', 'Medium Priority - Uhm might want to look at this', 'HIGH PRIORITY - THIS NEEDS TO GET DONE ASAP'];
     const [display, setDisplay] = React.useState("block");
     const [displayCanUp, setDisplayCanUp] = React.useState("none");
-
     const [snackState, setSnackState] = React.useState({
         open: false,
         vertical: 'top',
         horizontal: 'center',
         editMode: false
-      });
+    });
+    updatedValues['message'] = props.data.message;
+    updatedValues['priority'] = props.data.priority;
+    updatedValues['status'] = props.data.status;
+    updatedValues['est_time'] = props.data.est_time;
+    updatedValues['created_by'] = props.data.created_by;
+    updatedValues['sugg_worker'] = props.data.sugg_worker;
+    updatedValues['id'] = props.data._id;
 
-    const { vertical, horizontal, open, editMode } = snackState;
+
+    const { vertical, horizontal, open } = snackState;
     
-    function handleItemClick(key, value){
-        if(editMode){
-            console.log(key, value)
-        } else {
-            console.log("edit mode not enabled");
-            
-        }
-    }
-
     function handleClose(type, id) {
             if (type === "edit"){
                 setSnackState({ open: true, vertical: 'top', horizontal: 'center', editMode: true })
                 setDisplay("none");
                 setDisplayCanUp("block");
-            } else if (type === "delete"){
-                console.log("deleting");
+                setDisabled(false);
+            } else if (type === "update"){
+                console.log(updatedValues);
             }
-    
     //onClose();
     }
+
+    const myCallback = (key, data) => {
+        key = key.toLowerCase()
+        updatedValues[key] = data;
+    }
+
     
     return (
         <div>
             <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" {...other}>
-            <DialogTitle id="todoModal" onClick={ () => handleItemClick("title", props.data.title)} > {props.data.title} </DialogTitle>
+            <DialogTitle id="todoModal"> {props.data.title} </DialogTitle>
                 <DialogContent dividers>
                     <List>
-                        <ListItem button onClick={ () => handleItemClick("message", props.data.message) }>
+                        <ListItem>
                             <ListItemIcon>
                                 <FontAwesomeIcon color="#15317E" icon={ faComments } size="2x" />
                             </ListItemIcon>
-                            <ListItemText primary="Message" secondary={props.data.message} />
+                            <Message initialMessage = { props.data.message } disabled = { disabled } isMessage = { true } label = { "Message" } field = { "message" } callBack = { myCallback } />
                         </ListItem>
                         <Divider />
-                        <ListItem button onClick={ () => handleItemClick("priority", props.data.priority)} >
+                        <ListItem>
                             <ListItemIcon>
                                 <FontAwesomeIcon color="#15317E" icon={ faClipboardList } size="2x" />
                             </ListItemIcon>
-                            <ListItemText primary="Priority" secondary={<span style={{color: priorityArr[props.data.priority - 1] }}>{priorityWordingArr[props.data.priority -1]}</span>}/>
+                            <Priorities priority = { props.data.priority } disabled = { disabled } callBack = { myCallback } />
                         </ListItem>
                         <Divider />
-                        <ListItem button onClick={ () => handleItemClick("status", props.data.status)} >
+                        <ListItem>
                             <ListItemIcon>
                                 <FontAwesomeIcon color="#15317E" icon={ faSyncAlt } size="2x" />
                             </ListItemIcon>
-                            <ListItemText primary="status" secondary={props.data.status} />
+                            <Status status = { props.data.status } disabled = {disabled} callBack = { myCallback } />
                         </ListItem>
                         <Divider />
-                        <ListItem button onClick={ () => handleItemClick("est_time", props.data.est_time) }>
+                        <ListItem>
                             <ListItemIcon>
                                 <FontAwesomeIcon color="#15317E" icon={ faHourglassHalf } size="2x" />
                             </ListItemIcon>
-                            <ListItemText primary="Estimated Time" secondary={props.data.est_time + " hrs"}  />
+                            <Message initialMessage = { props.data.est_time } disabled = { disabled } isMessage = { false } label = { "Estimated Time "} field = { "est_time" } callBack = { myCallback }  />
                         </ListItem>
                         <Divider />
-                        <ListItem button onClick={ () => handleItemClick("sugg_worker", props.data.sugg_worker) }>
+                        <ListItem>
                             <ListItemIcon>
                                 <FontAwesomeIcon color="#15317E" icon={ faUserTag } size="2x" />
                             </ListItemIcon>
-                            <ListItemText primary="Inteded Worker" secondary={props.users[props.data.sugg_worker]} />
+                            <UserSelect user = { props.data.sugg_worker } users = { props.users } disabled = { disabled } description = { "Intended Worker" } field = { "sugg_worker" } callBack = { myCallback } />
                         </ListItem>
                         <Divider />
-                        <ListItem button onClick={ () => handleItemClick("user_created", props.data.user_created) }>
+                        <ListItem>
                             <ListItemIcon>
                                 <FontAwesomeIcon color="#15317E" icon={ faUser } size="2x" />
                             </ListItemIcon>
-                            <ListItemText primary="Created By" secondary={props.users[props.data.user_created]} />
+                            <UserSelect user = { props.data.user_created } users = { props.users } disabled = { disabled } description = { "Created By" } field = { "created_by" } callBack = { myCallback } />
                         </ListItem>
-                    </List>    
+                    </List>
                 </DialogContent>
                 <DialogActions>
                     <RaisedButton
+                        label="cancel"
+                        secondary={true}
+                        style={{margin: 15}}
+                        onClick={() => {
+                            setSnackState({ open: false, vertical: 'top', horizontal: 'center', editMode: false })
+                            setDisplay("block");
+                            setDisplayCanUp("none");
+                            setDisabled(true)
+                            onClose()
+                        }}
+                    />
+                    <RaisedButton
+
                             label="Edit"
                             primary={true}
                             style={{margin: 15, display: display}}
@@ -114,12 +142,6 @@ export default function TodoDialog(props) {
                         secondary={true}
                         style={{margin: 15, display: display}}
                         onClick={() => handleClose("delete", props.data._id)}
-                    />
-                    <RaisedButton
-                        label="cancel"
-                        secondary={true}
-                        style={{margin: 15, display: displayCanUp}}
-                        onClick={() => handleClose("cancel", props.data._id)}
                     />
                     <RaisedButton
                         label="Update"
