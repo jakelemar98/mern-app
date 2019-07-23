@@ -116,7 +116,7 @@ export class Dashboard extends Component {
         } else {
             return (
               <div>
-                <Nav menuName="App Dashboard" history={this.props.history} selected={[false, true]}/>
+                <Nav menuName="Menu Dashboard" history={this.props.history} selected={[false, true]}/>
                 <Todo todos={todos} users={users}/>
                 <Git gitItems={gitItems} url={baseGitUrl} />
               </div>
