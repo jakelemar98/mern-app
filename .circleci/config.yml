@@ -15,6 +15,8 @@ jobs:
           name: Run Node.Js Tests
           command: |
             cd back-end/node-app && npm run test
+     docker:
+      - image: circleci/buildpack-deps:stretch
       - run:
           name: Build Docker image
           command: |
