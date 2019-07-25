@@ -16,10 +16,6 @@ jobs:
           command: |
             cd back-end/node-app && npm run test
       - run:
-          name: Run Node.Js Tests
-          command: |
-            cd back-end/node-app && npm run test
-      - run:
           name: Build Docker image
           command: |
             docker build -t $IMAGE_NAME:latest -f ./front-end/react-app/Dockerfile-prod ./front-end/react-app/

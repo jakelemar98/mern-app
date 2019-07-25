@@ -11,9 +11,7 @@ describe("POST /login", () => {
     it("login user", (done) => {
             chai.request(app).post('/api/login')
             .send({username: "jakelemar98", password:  "Isu02201998"})
-            .end((err, res) => {     
-                console.log(res);
-                           
+            .end((err, res) => {                                
                 res.should.have.status(200);
                 res.body.should.be.a('object');
                 done();
