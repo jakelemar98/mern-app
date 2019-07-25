@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
@@ -14,6 +14,7 @@ jobs:
       - run:
           name: Run Node.Js Tests
           command: |
+            set -e
             cd back-end/node-app && npm run test
       - run:
           name: Build Docker image
