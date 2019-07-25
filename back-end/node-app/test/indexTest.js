@@ -6,10 +6,25 @@ const app = require('../index.js');
 chai.use(chaiHttp);
 chai.should();
 
-describe("GET /companies", () => {
+describe("POST /login", () => {
     // Test to get all Companies
-    it("should get all Companies", (done) => {
-            chai.request(app).get('/api/companies').end((err, res) => {
+    it("login user", (done) => {
+            chai.request(app).post('/api/login')
+            .send({username: "jakelemar98", password:  "Isu02201998"})
+            .end((err, res) => {     
+                console.log(res);
+                           
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                done();
+            });
+    });
+});
+describe("GET /test", () => {
+    // Test to get all Companies
+    it("login user", (done) => {
+            chai.request(app).get('/api/unitTest')
+            .end((err, res) => {                
                 res.should.have.status(200);
                 res.body.should.be.a('object');
                 done();

@@ -27,6 +27,10 @@ app.get('/api/todos', verifyToken, getTodos);
 
 app.post('/api/addTodo', verifyToken, addTodo);
 
+app.get("/api/unitTest", (req, res) => {
+    res.send({"Hey": "hello"})
+})
+
 app.listen(process.env.PORT || 5000)
 
 // ROUTE FUNCTIONS
