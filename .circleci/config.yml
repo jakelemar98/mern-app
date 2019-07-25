@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/buildpack-deps:stretch
+      - image: circleci/node:7.10
     environment:
       IMAGE_NAME: jakelemar98/mern-app
       BACK_IMAGE_NAME: jakelemar98/mern-app-backend
