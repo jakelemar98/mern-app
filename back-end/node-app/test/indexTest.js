@@ -13,7 +13,7 @@ describe("POST /login", () => {
             .send({username: "username", password:  "password"})
             .end((err, res) => { 
                 if (err) done(err);                           
-                res.should.have.status(400);
+                res.should.have.status(200);
                 res.body.should.be.a('object');
                 done();
             });
