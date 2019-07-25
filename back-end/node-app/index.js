@@ -27,30 +27,9 @@ app.get('/api/todos', verifyToken, getTodos);
 
 app.post('/api/addTodo', verifyToken, addTodo);
 
-app.post("/register",  (req, res) => {
-    try {
-        req.body.password = Bcrypt.hashSync(req.body.password, 10);
-        var dbo = req.db.db("app");
-        
-        var myobj = {
-                name: req.body.name,
-                user_id: req.body.user_id,
-                username: req.body.username,
-                password: req.body.password
-            };
-    
-        dbo.collection("users").insertOne(myobj, function(err, response) {
-            if (err) throw err;
-            res.json({
-                response
-            });
-        });
-    } catch (error) {
-        console.log(error);
-        
-        res.sendStatus(500);
-    }
-  });
+app.get("/api/unitTest", (req, res) => {
+    res.send({"Hey": "hello"})
+})
 
 app.listen(process.env.PORT || 5000)
 

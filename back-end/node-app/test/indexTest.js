@@ -10,23 +10,23 @@ describe("POST /login", () => {
     // Test to get all Companies
     it("login user", (done) => {
             chai.request(app).post('/api/login')
-            .send({username: "jakelemar98", password:  "Isu02201998"})
-            .end((err, res) => {                                
-                res.should.have.status(200);
+            .send({username: "username", password:  "password"})
+            .end((err, res) => { 
+                if (err) done(err);                           
+                res.should.have.status(400);
                 res.body.should.be.a('object');
                 done();
             });
     });
-});
-describe("GET /test", () => {
-    // Test to get all Companies
+
     it("login user", (done) => {
-            chai.request(app).get('/api/unitTest')
-            .end((err, res) => {                
-                res.should.have.status(200);
-                res.body.should.be.a('object');
-                done();
-            });
+        chai.request(app).get('/api/unitTest')
+        .end((err, res) => {
+            if (err) done(err);            
+            res.should.have.status(200);
+            res.body.should.be.a('object');
+            done();
+        });
     });
 });
 
