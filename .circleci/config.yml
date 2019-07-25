@@ -1,4 +1,4 @@
-version: 2.1
+version: 2
 jobs:
   build:
     docker:
@@ -15,8 +15,6 @@ jobs:
           name: Run Node.Js Tests
           command: |
             cd back-end/node-app && npm run test
-     docker:
-      - image: circleci/buildpack-deps:stretch
       - run:
           name: Build Docker image
           command: |
@@ -24,7 +22,7 @@ jobs:
       - run:
           name: Push Docker Image
           command: |
-            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASS"
             docker tag $IMAGE_NAME:latest $IMAGE_NAME:$CIRCLE_SHA1
             docker push $IMAGE_NAME:latest
             docker push $IMAGE_NAME:$CIRCLE_SHA1
@@ -35,7 +33,7 @@ jobs:
       - run:
           name: Push Docker Image
           command: |
-            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASS"
             docker tag $BACK_IMAGE_NAME:latest $BACK_IMAGE_NAME:$CIRCLE_SHA1
             docker push $BACK_IMAGE_NAME:latest
             docker push $BACK_IMAGE_NAME:$CIRCLE_SHA1
