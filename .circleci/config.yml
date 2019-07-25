@@ -57,7 +57,7 @@ jobs:
           message: Hello, $CIRCLE_JOB has just completed! View the changes here... app.jalmea01-mern-app.com
           webhook: webhook
 orbs:
-  slack: circleci/slack@x.y.z
+  slack: circleci/slack@3.3.0
 workflows:
   version: 2
   build-master:
