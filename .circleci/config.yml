@@ -55,7 +55,7 @@ jobs:
           color: '#42e2f4'
           mentions: 'jalema01'
           message: Hello, $CIRCLE_JOB has just completed! View the changes here... app.jalmea01-mern-app.com
-          webhook: webhook
+          webhook: $SLACK_HOOK
 orbs:
   slack: circleci/slack@3.3.0
 workflows:
