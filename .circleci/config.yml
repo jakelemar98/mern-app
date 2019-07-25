@@ -10,7 +10,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      -run:
+      - run:
         name: Run Node Tests
         command: |
           cd back-end/node-app && npm run test
