@@ -53,7 +53,7 @@ jobs:
           command: ./scripts/ci-deploy.sh
       - slack/notify:
           color: '#42e2f4'
-          message: A build has just completed! Production URL => app.jalmea01-mern-app.com
+          message: A build has just completed! Production URL => app.jalema01-mern-app.com
           webhook: $SLACK_HOOK
 orbs:
   slack: circleci/slack@3.3.0
