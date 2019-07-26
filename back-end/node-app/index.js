@@ -30,7 +30,7 @@ app.post('/api/todos', verifyToken, addTodo);
 // app.put('/api/todos/:todo',verifyToken, updateTodo)
 
 app.get("/api/unitTest", (req, res) => {
-    res.send({"Hey": "hello"})
+    res.send({"Hey": "helo"})
 })
 
 app.listen(process.env.PORT || 5000)
