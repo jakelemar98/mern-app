@@ -17,8 +17,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/api/login', login);
 
-app.get('/api/user', verifyToken, getUser)
-
 app.get('/api/users', verifyToken, getUsers)
 
 app.post("/api/users/:user_id",  (req, res) => {
@@ -45,6 +43,8 @@ app.post("/api/users/:user_id",  (req, res) => {
         res.sendStatus(500);
     }
 });
+
+app.get('/api/user', verifyToken, getUser)
 
 app.put('/api/users/:user_id', verifyToken, updateUser)
 
