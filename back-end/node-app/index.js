@@ -17,9 +17,34 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/api/login', login);
 
+app.get('/api/user', verifyToken, getUser)
+
 app.get('/api/users', verifyToken, getUsers)
 
-app.get('/api/user', verifyToken, getUser)
+app.post("/api/users/:user_id",  (req, res) => {
+    try {
+        req.body.password = Bcrypt.hashSync(req.body.password, 10);
+        var dbo = req.db.db("app");
+        
+        var myobj = {
+                name: req.body.name,
+                user_id: req.param.user_id,
+                username: req.body.username,
+                password: req.body.password
+            };
+    
+        dbo.collection("users").insertOne(myobj, function(err, response) {
+            if (err) throw err;
+            res.json({
+                response
+            });
+        });
+    } catch (error) {
+        console.log(error);
+        
+        res.sendStatus(500);
+    }
+});
 
 app.put('/api/users/:user_id', verifyToken, updateUser)
 
@@ -30,7 +55,7 @@ app.post('/api/todos', verifyToken, addTodo);
 // app.put('/api/todos/:todo',verifyToken, updateTodo)
 
 app.get("/api/unitTest", (req, res) => {
-    res.send({"Hey": "helo"})
+    res.send({"Hey": "hello"})
 })
 
 app.listen(process.env.PORT || 5000)
