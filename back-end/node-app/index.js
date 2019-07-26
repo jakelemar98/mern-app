@@ -17,15 +17,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/api/login', login);
 
-app.get('/api/user', verifyToken, getUser)
-
 app.get('/api/users', verifyToken, getUsers)
 
-app.post('/api/updateUser', verifyToken, updateUser)
+app.get('/api/user', verifyToken, getUser)
+
+app.put('/api/users/:user_id', verifyToken, updateUser)
 
 app.get('/api/todos', verifyToken, getTodos);
 
-app.post('/api/addTodo', verifyToken, addTodo);
+app.post('/api/todos', verifyToken, addTodo);
+
+// app.put('/api/todos/:todo',verifyToken, updateTodo)
 
 app.get("/api/unitTest", (req, res) => {
     res.send({"Hey": "hello"})
@@ -115,10 +117,9 @@ function updateUser(req, res){
                     }
                 };
             
-            var myquery = { user_id: req.body.id };
+            var myquery = { user_id: req.param.user_id };
 
             dbo.collection("users").updateOne(myquery, myobj, {upsert: true}).then((obj) => {
-                console.log('Updated - ' + obj);
                 dbo.collection("users").findOne({ username: req.body.username }, function(err, result){                    
                     jwt.sign({user: result}, 'secretKey', {expiresIn: '1h' }, (err, token) => {
                         res.status(200).send({
