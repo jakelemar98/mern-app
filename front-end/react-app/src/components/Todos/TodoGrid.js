@@ -4,7 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import todoImg from '../../static/images/todos.png';
+import todoImg from '../../static/images/trump.jpg';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TodoDialog from './TodoDialog'
 
@@ -65,7 +65,7 @@ export default function TodoGrid(props) {
                                     </CardContent>
                                 </div>
                                 <CardMedia
-                                    styles={styles.cover}
+                                    style= {styles.cover}
                                     image={todoImg}
                                     title="todos"
                                 />
