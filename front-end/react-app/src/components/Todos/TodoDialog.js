@@ -37,7 +37,6 @@ export default function TodoDialog(props) {
     updatedValues['est_time'] = props.data.est_time;
     updatedValues['created_by'] = props.data.created_by;
     updatedValues['sugg_worker'] = props.data.sugg_worker;
-    updatedValues['id'] = props.data._id;
 
 
     const { vertical, horizontal, open } = snackState;
@@ -49,7 +48,7 @@ export default function TodoDialog(props) {
                 setDisplayCanUp("block");
                 setDisabled(false);
             } else if (type === "update"){
-                console.log(updatedValues);
+                updateTodo();
             }
     //onClose();
     }
@@ -59,6 +58,33 @@ export default function TodoDialog(props) {
         updatedValues[key] = data;
     }
 
+    function updateTodo() {
+        var url = process.env.REACT_APP_API_URI + 'users/' + props.data._id;
+
+        var token = localStorage.getItem("token");
+
+        fetch(url, {
+            method: "PUT",
+        headers: {
+            'Authorization': 'bearer ' + token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }, body: JSON.stringify({
+            message: updatedValues['message'], 
+            priority: updatedValues['priority'],
+            status: updatedValues['status'],
+            est_time: updatedValues['est_time'],
+            sugg_worker: updatedValues['sugg_worker']
+          })
+        })
+        .then((response) => {
+            if (response.status === 200){
+              console.log(response)
+            } else {
+              throw new Error(response.json())
+            }
+          })
+    }
     
     return (
         <div>

@@ -19,6 +19,8 @@ app.post('/api/login', login);
 
 app.get('/api/users', verifyToken, getUsers)
 
+app.get('/api/user', verifyToken, getUser)
+
 app.post("/api/users/:user_id",  (req, res) => {
     try {
         req.body.password = Bcrypt.hashSync(req.body.password, 10);
@@ -44,15 +46,13 @@ app.post("/api/users/:user_id",  (req, res) => {
     }
 });
 
-app.get('/api/user', verifyToken, getUser)
-
 app.put('/api/users/:user_id', verifyToken, updateUser)
 
 app.get('/api/todos', verifyToken, getTodos);
 
 app.post('/api/todos', verifyToken, addTodo);
 
-// app.put('/api/todos/:todo',verifyToken, updateTodo)
+app.put('/api/todos/:todo',verifyToken, updateTodo)
 
 app.get("/api/unitTest", (req, res) => {
     res.send({"Hey": "hello"})
@@ -203,5 +203,36 @@ function addTodo(req, res){
         }
     });    
 };
+
+function updateTodo(req,res){
+    jwt.verify(req.token, 'secretKey', (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+        } else {
+            var dbo = req.db.db("app");
+            
+            var myobj = {
+                    $set: {
+                        message: req.body.message,
+                        est_time: req.body.est_time,
+                        sugg_worker: req.body.sugg_worker,
+                        status: req.body.status,
+                        priority: req.body.priority,
+                    }
+                };
+        
+            
+            var myquery = { _id: req.param.todo };
+
+            dbo.collection("todos").updateOne(myquery, myobj, {upsert: true}).then((obj) => {
+                res.status(200).send({
+                    obj
+                })
+            }).catch((err) => {
+                res.sendStatus(403)
+            })
+        }
+    });    
+}
 
 module.exports = app;
