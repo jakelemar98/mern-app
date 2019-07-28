@@ -94,7 +94,7 @@ export default function TodoDialog(props) {
         var token = localStorage.getItem("token");
 
         var isArrElEmpty;
-        
+
         if (req_type === "POST"){
             isArrElEmpty = true;
             if(updatedValues['title'] || updatedValues['created_by'] || 0 !== updatedValues['title'].length){
@@ -126,7 +126,7 @@ export default function TodoDialog(props) {
                   throw new Error(response.json())
                 }
             }).then((responseData) => {
-                    if (responseData.obj.nModified > 0 || req_type === "DELETE" || req_type === "POST") {
+                    if (req_type === "DELETE" || req_type === "POST" || responseData.obj.nModified > 0) {
                         window.location.reload()
                     } else {
                         alert("No values changed, Todo not updated")
