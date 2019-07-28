@@ -43,9 +43,9 @@ jobs:
           name: PR Check
           command: |
             if [[ $(echo "$CIRCLE_BRANCH" | grep -c "master") -gt 0 ]]; then
-              echo "This is Master." && echo "$CIRCLE_BRANCH"
+              echo "Skip doing stuff since it is a PR." && echo "$CIRCLE_BRANCH"
             else
-              echo "Not a master commit " && echo $CIRCLE_BRANCH"
+              echo "Not a PR, so now do what I want." && echo "$CIRCLE_BRANCH"
             fi
       - run:
           name: Install envsubst
