@@ -119,12 +119,11 @@ export class Account extends Component {
         
 
         if( (first !== this.state.first) || (last !== this.state.last) || (username !== this.state.username) ){
-            var url = process.env.REACT_APP_API_URI + 'updateUser'
+            var url = process.env.REACT_APP_API_URI + 'users/' + this.state.user.user_id
 
             var token = localStorage.getItem("token");
 
             var fullname = this.state.first + " " + this.state.last
-            console.log(fullname);
             
             fetch(url, {
                 method: "POST",
@@ -135,7 +134,6 @@ export class Account extends Component {
             }, body: JSON.stringify({
                 username: this.state.username,
                 name: fullname,
-                id: this.state.user.user_id
               })
             })
             .then((response) => {
