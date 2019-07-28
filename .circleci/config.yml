@@ -44,21 +44,13 @@ jobs:
           command: |
             if [[ $(echo "$CIRCLE_BRANCH" | grep -c "master") -gt 0 ]]; then
               echo "Skip doing stuff since it is a PR." && echo "$CIRCLE_BRANCH"
+              sudo apt-get update && sudo apt-get -y install gettext-base
+              curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+              chmod u+x ./kubectl
+              ./scripts/ci-deploy.sh
             else
               echo "Not a PR, so now do what I want." && echo "$CIRCLE_BRANCH"
             fi
-      - run:
-          name: Install envsubst
-          command: |
-            sudo apt-get update && sudo apt-get -y install gettext-base
-      - run:
-          name: Install kubectl
-          command: |
-            curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-            chmod u+x ./kubectl
-      - run:
-          name: Deploy Code
-          command: ./scripts/ci-deploy.sh
       - slack/notify:
           color: '#42e2f4'
           message: A build has just completed! Production URL => app.jalema01-mern-app.com
