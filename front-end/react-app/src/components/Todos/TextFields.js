@@ -12,13 +12,15 @@ const useStyles = makeStyles(theme => ({
   }));
   
 export default function Message(props) {
-    const {initialMessage, disabled, isMessage, label} = props;
+    const {initialMessage, disabled, isMessage, label, field} = props;
     const [message, setMessage] = React.useState(initialMessage)
     const classes = useStyles();
 
     function handleChange(e){
         setMessage(e.target.value)
-        props.callBack(label, e.target.value)
+        console.log(field);
+        
+        props.callBack(field, e.target.value)
     }
 
     return (

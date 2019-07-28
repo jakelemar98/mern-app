@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -18,13 +18,21 @@ import Status from './Status';
 import UserSelect from './UserSelect';
 import Message from './TextFields'
 
-const updatedValues   = [];
+const updatedValues = [];
 
 export default function TodoDialog(props) {
     const { onClose, selectedValue, ...other } = props;
     const [display, setDisplay] = React.useState("block");
     const [displayCanUp, setDisplayCanUp] = React.useState("none");
-    const [disabled, setDisabled] = React.useState(true)
+    const [displayCanAdd, setDisplayCanAdd] = React.useState("none");
+
+    const [disabled, setDisabled] = React.useState()
+    
+    useEffect(() => {
+        setDisabled(props.disabled)
+    }, [props.disabled]);
+    
+
     const [snackState, setSnackState] = React.useState({
         open: false,
         vertical: 'top',
@@ -36,60 +44,113 @@ export default function TodoDialog(props) {
     updatedValues['status'] = props.data.status;
     updatedValues['est_time'] = props.data.est_time;
     updatedValues['created_by'] = props.data.created_by;
-    updatedValues['sugg_worker'] = props.data.sugg_worker;
-
+    updatedValues['sugg_worker'] = props.data.sugg_worker;    
 
     const { vertical, horizontal, open } = snackState;
-    
+
     function handleClose(type, id) {
             if (type === "edit"){
                 setSnackState({ open: true, vertical: 'top', horizontal: 'center', editMode: true })
                 setDisplay("none");
+                setDisabled(false)
                 setDisplayCanUp("block");
-                setDisabled(false);
             } else if (type === "update"){
-                updateTodo();
+                modifyTodo("PUT");
+            } else if (type === "delete"){
+                modifyTodo("DELETE");
+            } else if (type === "add") {
+                console.log("adding");
+                
+                modifyTodo("POST")
+            } else if (type === "close") {
+                setSnackState({ open: false, vertical: 'top', horizontal: 'center', editMode: false })
+                setDisplay("block");
+                setDisplayCanUp("none");
+                onClose()
             }
-    //onClose();
     }
 
     const myCallback = (key, data) => {
         key = key.toLowerCase()
-        updatedValues[key] = data;
+        updatedValues[key] = data;        
     }
 
-    function updateTodo() {
-        var url = process.env.REACT_APP_API_URI + 'users/' + props.data._id;
+    function TitleSection() {
+        const isAdd = props.add;
+        
+        if (isAdd) {
+            setDisplay("none")
+            setDisplayCanAdd("block")
+            return <Message initialMessage = { "" } disabled = { false } isMessage = { true } label = { "Title" } field = { "title" } callBack = { myCallback } />
+        } else {
+            return props.data.title;
+        }
+      }
+
+    function modifyTodo(req_type) {
+
+        var url = process.env.REACT_APP_API_URI + 'todos/' + props.data._id;
 
         var token = localStorage.getItem("token");
 
-        fetch(url, {
-            method: "PUT",
-        headers: {
-            'Authorization': 'bearer ' + token,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }, body: JSON.stringify({
-            message: updatedValues['message'], 
-            priority: updatedValues['priority'],
-            status: updatedValues['status'],
-            est_time: updatedValues['est_time'],
-            sugg_worker: updatedValues['sugg_worker']
-          })
-        })
-        .then((response) => {
-            if (response.status === 200){
-              console.log(response)
-            } else {
-              throw new Error(response.json())
-            }
-          })
+        var isArrElEmpty;
+        
+        if (req_type === "POST"){
+            isArrElEmpty = true;
+            if(updatedValues['title'] || updatedValues['created_by'] || 0 !== updatedValues['title'].length){
+                isArrElEmpty = false; 
+                url = process.env.REACT_APP_API_URI + 'todos';
+            }       
+        }
+
+        if(!isArrElEmpty){
+            fetch(url, {
+                method: req_type,
+            headers: {
+                'Authorization': 'bearer ' + token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }, body: JSON.stringify({
+                title: updatedValues['title'],
+                message: updatedValues['message'], 
+                priority: updatedValues['priority'],
+                status: updatedValues['status'],
+                est_time: updatedValues['est_time'],
+                sugg_worker: updatedValues['sugg_worker']
+              })
+            })
+            .then((response) => {
+                if (response.status === 200){
+                  return response.json()
+                } else {
+                  throw new Error(response.json())
+                }
+            }).then((responseData) => {
+                    if (responseData.obj.nModified > 0 || req_type === "DELETE" || req_type === "POST") {
+                        window.location.reload()
+                    } else {
+                        alert("No values changed, Todo not updated")
+                    }
+            })
+        } else{
+            alert("You must fill out the Title and Created By fields")
+        }
+
     }
-    
+
     return (
         <div>
-            <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" {...other}>
-            <DialogTitle id="todoModal"> {props.data.title} </DialogTitle>
+            <Dialog onClose={() => handleClose("close")} aria-labelledby="simple-dialog-title" {...other}>
+                <DialogTitle id="todoModal">
+                    <List>
+                        <ListItem>
+                            <ListItemIcon>
+                                <FontAwesomeIcon color="#15317E" icon={ faComments } size="2x" />
+                            </ListItemIcon>
+                            <TitleSection />                            
+                        </ListItem>
+                    </List>
+                </DialogTitle>
                 <DialogContent dividers>
                     <List>
                         <ListItem>
@@ -156,7 +217,7 @@ export default function TodoDialog(props) {
                             onClick={() => handleClose("edit", props.data._id)}
                     />
                     <RaisedButton
-                        label="Delete"
+                        label="Invalidate"
                         secondary={true}
                         style={{margin: 15, display: display}}
                         onClick={() => handleClose("delete", props.data._id)}
@@ -167,16 +228,22 @@ export default function TodoDialog(props) {
                         style={{margin: 15, display: displayCanUp}}
                         onClick={() => handleClose("update", props.data._id)}
                     />
+                    <RaisedButton
+                        label="Add Todo"
+                        primary={true}
+                        style={{margin: 15, display: displayCanAdd}}
+                        onClick={() => handleClose("add", props.data._id)}
+                    />
                 </DialogActions>
-        </Dialog>
-        <Portal>
-        <Snackbar
-            anchorOrigin={{ vertical, horizontal }}
-            open={open}
-            onClose={handleClose}
-            message={<span>Click on the field you wish too edit</span>}
-        />
-        </Portal>
+            </Dialog>
+            <Portal>
+                <Snackbar
+                    anchorOrigin={{ vertical, horizontal }}
+                    open={open}
+                    onClose={handleClose}
+                    message={<span>Click on the field you wish too edit</span>}
+                />
+            </Portal>
         </div>
     );
     }

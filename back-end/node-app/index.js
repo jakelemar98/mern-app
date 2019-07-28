@@ -6,6 +6,7 @@ app.use(cors());
 const Bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken')
 
+var ObjectID = require('mongodb').ObjectID;
 var expressMongoDb = require('express-mongo-db');
 app.use(expressMongoDb('mongodb+srv://jakelemar98:Isu02201998@appcluster-btfvs.mongodb.net/test?retryWrites=true&w=majority'));
 
@@ -53,6 +54,8 @@ app.get('/api/todos', verifyToken, getTodos);
 app.post('/api/todos', verifyToken, addTodo);
 
 app.put('/api/todos/:todo',verifyToken, updateTodo)
+
+app.delete('/api/todos/:todo',verifyToken, deleteTodo)
 
 app.get("/api/unitTest", (req, res) => {
     res.send({"Hey": "hello"})
@@ -142,7 +145,7 @@ function updateUser(req, res){
                     }
                 };
             
-            var myquery = { user_id: req.param.user_id };
+            var myquery = { user_id: req.params.user_id };
 
             dbo.collection("users").updateOne(myquery, myobj, {upsert: true}).then((obj) => {
                 dbo.collection("users").findOne({ username: req.body.username }, function(err, result){                    
@@ -204,10 +207,12 @@ function addTodo(req, res){
     });    
 };
 
-function updateTodo(req,res){
+function updateTodo(req, res){
     jwt.verify(req.token, 'secretKey', (err, authData) => {
         if (err) {
-            res.sendStatus(403)
+            res.status(403).send({
+                err
+            })
         } else {
             var dbo = req.db.db("app");
             
@@ -221,18 +226,37 @@ function updateTodo(req,res){
                     }
                 };
         
-            
-            var myquery = { _id: req.param.todo };
-
+            var myquery = {_id: new ObjectID(req.params.todo)};
             dbo.collection("todos").updateOne(myquery, myobj, {upsert: true}).then((obj) => {
                 res.status(200).send({
                     obj
                 })
             }).catch((err) => {
-                res.sendStatus(403)
+                res.sendStatus(500)
             })
         }
     });    
+}
+
+function deleteTodo(req, res){
+    jwt.verify(req.token, 'secretKey', (err, authData) => {
+        if (err) {
+            res.status(403).send({
+                err
+            })
+        } else {
+            var dbo = req.db.db("app");
+            var query = {_id: new ObjectID(req.params.todo)};
+
+            dbo.collection("todos").deleteOne(query).then((obj) => {
+                res.status(200).send({
+                    obj
+                })
+            }).catch((err) => {
+                res.sendStatus(500)
+            })
+        }
+    });   
 }
 
 module.exports = app;

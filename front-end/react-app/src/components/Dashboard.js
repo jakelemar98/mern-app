@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Nav from './Nav'
 import Todo from './Todos/TodoGrid'
-import Git from './GitGrid'
 
 export class Dashboard extends Component {
     constructor(props) {
@@ -11,18 +10,14 @@ export class Dashboard extends Component {
           gitError: null,
           userError: null,
           dashIsLoaded: false,
-          gitIsLoaded: false,
           userIsLoaded: false,
           todos: [],
-          gitItems: [],
           users: [],
-          baseGitUrl: "https://github.com/jakelemar98/mern-app/tree/"
         };
       }
     
       componentDidMount() {
         this.fetchDashItems();
-        this.fetchGitRepos();
         this.fetchUsers();
       }
       
@@ -48,28 +43,6 @@ export class Dashboard extends Component {
               this.setState({
                 dashIsLoaded: true,
                 dashError: error
-              });
-            }
-          )
-      }
-
-      fetchGitRepos = e => {
-        var url = "https://api.github.com/repos/jakelemar98/mern-app/branches"
-
-        fetch(url, {
-            method: "GET"
-        })
-          .then(res => res.json())
-          .then( (result) => {              
-              this.setState({
-                  gitIsLoaded: true,
-                  gitItems: result
-              });                
-            },
-            (error) => {
-              this.setState({
-                gitIsLoaded: true,
-                gitError: error
               });
             }
           )
@@ -108,17 +81,16 @@ export class Dashboard extends Component {
       }
 
       render() {
-        const { error, todos, gitItems, users, dashError, gitError, userError, dashIsLoaded, gitIsLoaded, userIsLoaded, baseGitUrl } = this.state;
-        if (dashError || gitError || userError) {
-          return <div>Dash Error: {error.message} Git Error: {gitError.message}</div>;
-        } else if (!dashIsLoaded || !gitIsLoaded || !userIsLoaded) {
+        const { error, todos, users, dashError, userError, dashIsLoaded, userIsLoaded } = this.state;
+        if (dashError || userError) {
+          return <div>Dash Error: {error.message} </div>;
+        } else if (!dashIsLoaded || !userIsLoaded) {
           return <div>Loading...</div>;
         } else {
             return (
               <div>
                 <Nav menuName="Menu App Dashboard" history={this.props.history} selected={[false, true]}/>
-                <Todo todos={todos} users={users}/>
-                <Git gitItems={gitItems} url={baseGitUrl} />
+                <Todo todos={todos} users={users} history={this.props.history}/>
               </div>
             )
         }
