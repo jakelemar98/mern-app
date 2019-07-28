@@ -127,7 +127,7 @@ export default function TodoDialog(props) {
                 }
             }).then((responseData) => {
                     if (req_type === "DELETE" || req_type === "POST" || responseData.obj.nModified > 0) {
-                        window.location.reload()
+                      window.location.reload()
                     } else {
                         alert("No values changed, Todo not updated")
                     }
