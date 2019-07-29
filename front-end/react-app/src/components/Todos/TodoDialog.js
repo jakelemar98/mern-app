@@ -7,7 +7,7 @@ import ListItem from '@material-ui/core/ListItem';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSyncAlt , faComments , faClipboardList , faHourglassHalf , faUserTag , faUser } from '@fortawesome/free-solid-svg-icons';
+import { faSyncAlt , faComments , faClipboardList , faHourglassHalf , faUserTag , faUser, faFileSignature } from '@fortawesome/free-solid-svg-icons';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import { withStyles } from '@material-ui/core/styles';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -81,7 +81,15 @@ export default function TodoDialog(props) {
         if (isAdd) {
             setDisplay("none")
             setDisplayCanAdd("block")
-            return <Message initialMessage = { "" } disabled = { false } isMessage = { true } label = { "Title" } field = { "title" } callBack = { myCallback } />
+            return (
+                <React.Fragment>
+                    <ListItemIcon>
+                        <FontAwesomeIcon color="#15317E" icon={ faFileSignature } size="2x" /> 
+                    </ListItemIcon>
+                    <Message initialMessage = { "" } disabled = { false } isMessage = { true } label = { "Title" } field = { "title" } callBack = { myCallback } />
+                </React.Fragment>
+            );
+               
         } else {
             return props.data.title;
         }
@@ -145,9 +153,6 @@ export default function TodoDialog(props) {
                 <DialogTitle id="todoModal">
                     <List>
                         <ListItem>
-                            <ListItemIcon>
-                                <FontAwesomeIcon color="#15317E" icon={ faComments } size="2x" />
-                            </ListItemIcon>
                             <TitleSection />                            
                         </ListItem>
                     </List>

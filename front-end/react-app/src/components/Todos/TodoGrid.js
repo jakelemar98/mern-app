@@ -97,13 +97,15 @@ export default function TodoGrid(props) {
                             <Card style={ styles.card } >
                                 <div style={styles.details}>
                                     <CardContent style={styles.content}>
-                                        <Typography onClick={() => handleClickOpen(index)} component="h4" variant="h4">
-                                            {todo.title}
-                                        </Typography>
-                                    
-                                        <Typography variant="subtitle1" color="textSecondary">
-                                            Assigned: {users[todo.sugg_worker]}
-                                        </Typography>
+                                        <Container>
+                                            <Typography onClick={() => handleClickOpen(index)} component="h4" variant="h4">
+                                                {todo.title}
+                                            </Typography>
+                                        
+                                            <Typography variant="subtitle1" color="textSecondary">
+                                                Assigned: {users[todo.sugg_worker]}
+                                            </Typography>
+                                        </Container>
                                     </CardContent>
                                 </div>
                             </Card>

@@ -114,9 +114,7 @@ export class Account extends Component {
         var name = this.state.user.name.split(" ");
         var first = name[0];
         var last = name[1];
-        var username = this.state.user.username
-        console.log(this.state.user._id);
-        
+        var username = this.state.user.username        
 
         if( (first !== this.state.first) || (last !== this.state.last) || (username !== this.state.username) ){
             var url = process.env.REACT_APP_API_URI + 'users/' + this.state.user.user_id
@@ -126,7 +124,7 @@ export class Account extends Component {
             var fullname = this.state.first + " " + this.state.last
             
             fetch(url, {
-                method: "POST",
+                method: "PUT",
             headers: {
                 'Authorization': 'bearer ' + token,
                 'Accept': 'application/json',
@@ -145,7 +143,6 @@ export class Account extends Component {
               })
               .then((responseData) => {                  
                 localStorage.setItem('token', responseData.token);
-                console.log("here");
                 this.setState(this.initialState)
                 this.getUserInfo()
               })
