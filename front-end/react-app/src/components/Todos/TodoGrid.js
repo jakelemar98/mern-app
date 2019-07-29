@@ -79,10 +79,21 @@ export default function TodoGrid(props) {
                     <Typography component="h1" variant="h2" align="center" color="textPrimary">
                     Todos For Dev
                     </Typography>
+                    <div style={{padding: 5 }} >
+                        <Fab color="primary" style={{pr: 5 }} variant="extended" onClick={handleNew} aria-label="Add" style={styles.fab}>
+                            <AddIcon />
+                            Add Todo 
+                        </Fab>
+                        <Fab variant="extended" style={{pl: 5 }} aria-label="Delete" style={styles.fab}>
+                            <CloudUploadIcon style={styles.leftIcon} /> 
+                            Show All
+                        </Fab>
+                    </div>
                 </Container>
-                    <Grid container spacing={3} style={styles.root}>
+                <Container maxWidth="lg">
+                    <Grid container spacing={3} style={styles.root} direction="row" justify="center" alignItems="center">
                         {todos.map((todo, index) => (
-                        <Grid item xs={3} key={index}>
+                        <Grid item xs={4} key={index}>
                             <Card style={ styles.card } >
                                 <div style={styles.details}>
                                     <CardContent style={styles.content}>
@@ -95,38 +106,11 @@ export default function TodoGrid(props) {
                                         </Typography>
                                     </CardContent>
                                 </div>
-                                {/* <CardMedia
-                                    style= {styles.cover}
-                                    image={todoImg}
-                                    title="todos"
-                                /> */}
                             </Card>
                         </Grid>
                         ))}
-                        <Grid item xs={2} key={"actions"}  >
-                            <Card style={ styles.card } >
-                                <div style={styles.details}>
-                                    <div style={{ display:'flex', justifyContent:'center' }}>
-                                        <CardContent style={styles.content} >
-                                            <div style={{padding: 5 }} >
-                                                <Fab color="primary" variant="extended" onClick={handleNew} aria-label="Add" style={styles.fab}>
-                                                    <AddIcon />
-                                                    Add Todo 
-                                                </Fab>
-                                            </div>
-                                            <div style={{padding: 5 }}>
-                                                <Fab variant="extended" aria-label="Delete" style={styles.fab}>
-                                                    <CloudUploadIcon style={styles.leftIcon} /> 
-                                                    Show All
-                                                </Fab>
-                                            </div>
-                                        </CardContent>
-                                    </div>
-                                </div>
-
-                            </Card>
-                        </Grid>
                     </Grid>
+                </Container>
                     <TodoDialog open={ open } onClose={ handleClose } data={ data } users={ users } history={ props.history } disabled = { disabled } add = { add ? 1 : 0} />
                 </React.Fragment>
             </MuiThemeProvider>
