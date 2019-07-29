@@ -9,6 +9,9 @@ import TodoDialog from './TodoDialog'
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import UserSelect from './UserSelect';
+import Status from './Status';
+import Priorities from './Priorities'
 
 const styles = {
     root: {
@@ -33,10 +36,10 @@ const styles = {
           width: 150,
       },
       header: {
-        padding: 15,
+        padding: 5,
       },
       fab: {
-          margin: 15,
+          margin: 10,
 
       },
       extendedIcon: {
@@ -46,6 +49,8 @@ const styles = {
           marginRight: 5,
       }
   };
+
+  const updatedValues = []
 
 export default function TodoGrid(props) {    
     const {todos, users} = props;    
@@ -65,6 +70,13 @@ export default function TodoGrid(props) {
       setOpen(false);
     };
 
+    const myCallback = (key, data) => {
+        key = key.toLowerCase()
+        updatedValues[key] = data;
+        console.log(updatedValues);
+            
+    }
+
     function handleNew(){
         setData({message: "", status: "", priority: "", est_time: "", sugg_worker: "", user_created: "", title: ""})
         setAdd(true)
@@ -72,14 +84,38 @@ export default function TodoGrid(props) {
         setOpen(true)
     }
 
+    function CardFill(){
+        return (
+            todos.map((todo, index) => (
+                <Grid item xs={4} key={index}>
+                    <Card style={ styles.card } >
+                        <div style={styles.details}>
+                            <CardContent style={styles.content}>
+                                <Container>
+                                    <Typography onClick={() => handleClickOpen(index)} component="h4" variant="h4">
+                                        {todo.title}
+                                    </Typography>
+                                
+                                    <Typography variant="subtitle1" color="textSecondary">
+                                        Assigned: {users[todo.sugg_worker]}
+                                    </Typography>
+                                </Container>
+                            </CardContent>
+                        </div>
+                    </Card>
+                </Grid>
+            ))
+        )
+    }
+
     return (
             <MuiThemeProvider>
                 <React.Fragment>
                 <Container maxWidth="sm" component="main" style={styles.header}>
                     <Typography component="h1" variant="h2" align="center" color="textPrimary">
-                    Todos For Dev
+                    Todos
                     </Typography>
-                    <div style={{padding: 5 }} >
+                    <div>
                         <Fab color="primary" variant="extended" onClick={handleNew} aria-label="Add" style={styles.fab}>
                             <AddIcon />
                             Add Todo 
@@ -92,25 +128,20 @@ export default function TodoGrid(props) {
                 </Container>
                 <Container maxWidth="lg">
                     <Grid container spacing={3} style={styles.root} direction="row" justify="center" alignItems="center">
-                        {todos.map((todo, index) => (
-                        <Grid item xs={4} key={index}>
-                            <Card style={ styles.card } >
-                                <div style={styles.details}>
-                                    <CardContent style={styles.content}>
-                                        <Container>
-                                            <Typography onClick={() => handleClickOpen(index)} component="h4" variant="h4">
-                                                {todo.title}
-                                            </Typography>
-                                        
-                                            <Typography variant="subtitle1" color="textSecondary">
-                                                Assigned: {users[todo.sugg_worker]}
-                                            </Typography>
-                                        </Container>
-                                    </CardContent>
-                                </div>
-                            </Card>
+                        <Grid item xs={4}>
+                            <UserSelect user = { "" } users = { props.users } description = { "Assigned Worker" } field = { "sugg_worker" } callBack = { myCallback } />
                         </Grid>
-                        ))}
+                        <Grid item xs={4}>
+                            <Status status = { "" } callBack = { myCallback } />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Priorities priority = { "" } callBack = { myCallback } />
+                        </Grid>
+                    </Grid>
+                </Container>
+                <Container maxWidth="lg">
+                    <Grid container spacing={3} style={styles.root} direction="row" justify="center" alignItems="center">
+                        <CardFill />
                     </Grid>
                 </Container>
                     <TodoDialog open={ open } onClose={ handleClose } data={ data } users={ users } history={ props.history } disabled = { disabled } add = { add ? 1 : 0} />

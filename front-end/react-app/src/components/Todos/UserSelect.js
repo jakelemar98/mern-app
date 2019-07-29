@@ -35,12 +35,12 @@ export default function UserSelect(props) {
     return (
         <div>
             <FormControl className={ classes.formControl } disabled={props.disabled} >
-                <InputLabel htmlFor="demo-controlled-open-select">{ props.description }</InputLabel>
+                <InputLabel htmlFor="user-selct">{ props.description }</InputLabel>
                 <Select
                     value={ userVal }
                     inputProps={{
                         name: 'age',
-                        id: 'demo-controlled-open-select',
+                        id: 'user-select',
                     }}
                     onChange={handleChange}
                     style={{color: "green"}}
