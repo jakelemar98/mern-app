@@ -122,14 +122,15 @@ export default function TodoDialog(props) {
             .then((response) => {
                 if (response.status === 200){
                   return response.json()
-                } else {
-                  throw new Error(response.json())
+                } else if (response.status === 403){
+                  alert("Please sign in and try again")
+                  props.history.push("/")
                 }
             }).then((responseData) => {
                     if (req_type === "DELETE" || req_type === "POST" || responseData.obj.nModified > 0) {
                       window.location.reload()
                     } else {
-                        alert("No values changed, Todo not updated")
+                        alert("No values changed Todo not updated")
                     }
             })
         } else{
