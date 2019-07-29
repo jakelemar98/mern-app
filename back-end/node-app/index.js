@@ -49,6 +49,8 @@ app.post("/api/users/:user_id",  (req, res) => {
 
 app.put('/api/users/:user_id', verifyToken, updateUser)
 
+app.put('/api/users/password/:id', verifyToken, updateUserPass)
+
 app.get('/api/todos', verifyToken, getTodos);
 
 app.post('/api/todos', verifyToken, addTodo);
@@ -157,6 +159,40 @@ function updateUser(req, res){
                 })
             }).catch((err) => {
                 res.sendStatus(403)
+            })
+        }
+    });
+}
+
+function updateUserPass(req, res){
+    jwt.verify(req.token, 'secretKey', (err, authData) => {
+        if (err){            
+            res.sendStatus(403)
+        } else {
+            var dbo = req.db.db("app");
+
+            hashedPass = Bcrypt.hashSync(req.body.newPassword, 10);
+
+            var obj = {
+                $set: {
+                    password: hashedPass
+                }
+            }
+            
+            var myquery = {_id: new ObjectID(req.params.id)};
+
+            dbo.collection("users").findOne( myquery, function(err, response) {
+                if (err) throw err;
+                if(!Bcrypt.compareSync(req.body.oldPassword, response.password)) {                
+                    return res.status(400).send({ message: "The password is invalid" });
+                }
+                dbo.collection("users").updateOne( myquery, obj, {upsert: true}).then((obj) => {
+                    res.status(200).send({
+                        obj
+                    })
+                }).catch((err) => {
+                    res.sendStatus(500)
+                })
             })
         }
     });

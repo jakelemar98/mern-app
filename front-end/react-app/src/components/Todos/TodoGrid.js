@@ -36,7 +36,7 @@ const styles = {
         padding: 15,
       },
       fab: {
-          margin: 1,
+          margin: 15,
 
       },
       extendedIcon: {
@@ -80,11 +80,11 @@ export default function TodoGrid(props) {
                     Todos For Dev
                     </Typography>
                     <div style={{padding: 5 }} >
-                        <Fab color="primary" style={{pr: 5 }} variant="extended" onClick={handleNew} aria-label="Add" style={styles.fab}>
+                        <Fab color="primary" variant="extended" onClick={handleNew} aria-label="Add" style={styles.fab}>
                             <AddIcon />
                             Add Todo 
                         </Fab>
-                        <Fab variant="extended" style={{pl: 5 }} aria-label="Delete" style={styles.fab}>
+                        <Fab variant="extended" aria-label="Delete" style={styles.fab}>
                             <CloudUploadIcon style={styles.leftIcon} /> 
                             Show All
                         </Fab>
