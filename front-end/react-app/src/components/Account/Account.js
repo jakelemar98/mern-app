@@ -6,9 +6,10 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Nav from './Nav'
-import img from '../static/images/avatar/tiger.jpg'; 
+import Nav from '../Nav'
+import img from '../../static/images/avatar/tiger.jpg'; 
 import RaisedButton from 'material-ui/RaisedButton';
+import PasswordDialog from './AccountPassDialog';
 
 export class Account extends Component {
 
@@ -23,7 +24,8 @@ export class Account extends Component {
             username: "",
             first: "",
             last: "",
-            display: "none"
+            display: "none",
+            open: false
         };
 
         this.initialState = this.state
@@ -49,6 +51,7 @@ export class Account extends Component {
                 var name = result.name.split(" ");
                 var first = name[0];
                 var last = name[1];
+                
                 this.setState({
                     isLoaded: true,
                     user: result,
@@ -64,6 +67,12 @@ export class Account extends Component {
               });
             }
           )
+    }
+
+    updateUserPass = e => {
+        this.setState({
+            open: true
+        })
     }
 
     enableFields = e => {
@@ -110,13 +119,15 @@ export class Account extends Component {
         }
     }
 
+    handleClose = value => {
+        this.setState({open: false});
+      };
+
     updateUser = e => {
         var name = this.state.user.name.split(" ");
         var first = name[0];
         var last = name[1];
-        var username = this.state.user.username
-        console.log(this.state.user._id);
-        
+        var username = this.state.user.username        
 
         if( (first !== this.state.first) || (last !== this.state.last) || (username !== this.state.username) ){
             var url = process.env.REACT_APP_API_URI + 'users/' + this.state.user.user_id
@@ -126,7 +137,7 @@ export class Account extends Component {
             var fullname = this.state.first + " " + this.state.last
             
             fetch(url, {
-                method: "POST",
+                method: "PUT",
             headers: {
                 'Authorization': 'bearer ' + token,
                 'Accept': 'application/json',
@@ -145,7 +156,6 @@ export class Account extends Component {
               })
               .then((responseData) => {                  
                 localStorage.setItem('token', responseData.token);
-                console.log("here");
                 this.setState(this.initialState)
                 this.getUserInfo()
               })
@@ -155,7 +165,7 @@ export class Account extends Component {
     }
 
     render() {
-        const { error, isLoaded, username, first, last, display } = this.state;
+        const { error, isLoaded, username, first, last, display, open } = this.state;
 
         // var userArr = user.name.split(" ");
         // const firstname = userArr[0];
@@ -212,6 +222,12 @@ export class Account extends Component {
                                     </CardActionArea>
                                     <CardActions style={{ display:'flex', justifyContent:'center', backgroundColor:'#3f51b5' }}>
                                     <RaisedButton
+                                        label="Update Account Password"
+                                        primary={true}
+                                        style={{margin: 15, display: display}}
+                                        onClick={this.updateUserPass}
+                                    />
+                                    <RaisedButton
                                         label={this.state.label}
                                         secondary={true}
                                         style={styles.button}
@@ -226,6 +242,7 @@ export class Account extends Component {
                                     </CardActions>
                                 </Card>
                             </div>
+                            <PasswordDialog open = { open } onClose={this.handleClose} id={this.state.user._id} history={this.props.history} />
                         </React.Fragment>
                     </MuiThemeProvider>
                 </div>
