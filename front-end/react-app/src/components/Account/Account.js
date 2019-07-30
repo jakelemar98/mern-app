@@ -149,15 +149,19 @@ export class Account extends Component {
             })
             .then((response) => {
                 if (response.status === 200){
-                  return response.json()
+                    return response.json()
                 } else if (response.status === 403){
-                  this.props.history.push("/")
+                    return 403;
                 }
               })
-              .then((responseData) => {                  
-                localStorage.setItem('token', responseData.token);
-                this.setState(this.initialState)
-                this.getUserInfo()
+              .then((responseData) => {
+                if(responseData === 403){
+                    this.props.history.push("/")              
+                } else {
+                    localStorage.setItem('token', responseData.token);
+                    this.setState(this.initialState)
+                    this.getUserInfo()
+                }
               })
         } else {
             alert("Please Change A Value")
