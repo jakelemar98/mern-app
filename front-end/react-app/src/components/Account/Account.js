@@ -150,8 +150,8 @@ export class Account extends Component {
             .then((response) => {
                 if (response.status === 200){
                   return response.json()
-                } else {
-                  throw new Error(response.json())
+                } else if (response.status === 403){
+                  this.props.history.push("/")
                 }
               })
               .then((responseData) => {                  
