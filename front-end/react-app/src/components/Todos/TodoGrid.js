@@ -14,7 +14,6 @@ import Status from './Status';
 import Priorities from './Priorities'
 import Paper from '@material-ui/core/Paper';
 
-
 const styles = {
     root: {
         flexGrow: 1,
@@ -165,7 +164,6 @@ export default function TodoGrid(props) {
                             Todos
                         </Typography>
                     </Paper>
-
                     <div style= {{ padding: 20 }}>
                         <Fab color="primary" variant="extended" onClick={handleNew} aria-label="Add" style={styles.fab}>
                             <AddIcon />
