@@ -12,18 +12,20 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import UserSelect from './UserSelect';
 import Status from './Status';
 import Priorities from './Priorities'
+import Paper from '@material-ui/core/Paper';
+
 
 const styles = {
     root: {
         flexGrow: 1,
-        padding: 15
       },
       title: {
         flexGrow: 1,
       },
       card: {
           display: 'flex',
-          height: 140
+          height: 140,
+          background: "#DCDCDC" 
       },
       details: {
           display: 'flex',
@@ -36,7 +38,7 @@ const styles = {
           width: 150,
       },
       header: {
-        padding: 5,
+        paddingTop: 20,
       },
       fab: {
           margin: 10,
@@ -52,8 +54,6 @@ const styles = {
 
   const updatedValues = []
 
-  var allTodos = [];
-
 export default function TodoGrid(props) {    
     const {todos, users} = props;    
     const [open, setOpen] = React.useState(false);
@@ -63,8 +63,6 @@ export default function TodoGrid(props) {
     const [status, setStatus] = React.useState("")
     const [worker, setWorker] = React.useState(0)
     const [priority, setPriority] = React.useState("")
-
-    allTodos = todos;
 
     function handleClickOpen(index) {
         console.log(index);
@@ -109,7 +107,7 @@ export default function TodoGrid(props) {
             if  (vals.status !== ""){
                 trueStatus = todo.status === vals.status;
             } else {
-                trueStatus = true;
+                trueStatus = todo.status !== "Completed";
             }
 
             if (vals.sugg_worker !== 0){
@@ -162,10 +160,13 @@ export default function TodoGrid(props) {
             <MuiThemeProvider>
                 <React.Fragment>
                 <Container maxWidth="sm" component="main" style={styles.header}>
-                    <Typography component="h1" variant="h2" align="center" color="textPrimary">
-                    Todos
-                    </Typography>
-                    <div>
+                    <Paper style={{ background: "#DCDCDC" }}>
+                        <Typography component="h1" variant="h2" align="center" color="textPrimary">
+                            Todos
+                        </Typography>
+                    </Paper>
+
+                    <div style= {{ padding: 20 }}>
                         <Fab color="primary" variant="extended" onClick={handleNew} aria-label="Add" style={styles.fab}>
                             <AddIcon />
                             Add Todo 
@@ -182,10 +183,10 @@ export default function TodoGrid(props) {
                             <UserSelect user = { "" } users = { props.users } description = { "Assigned Worker" } field = { "sugg_worker" } callBack = { myCallback } />
                         </Grid>
                         <Grid item xs={4}>
-                            <Status status = { "" } callBack = { myCallback } />
+                            <Priorities priority = { "" } callBack = { myCallback } />
                         </Grid>
                         <Grid item xs={4}>
-                            <Priorities priority = { "" } callBack = { myCallback } />
+                            <Status status = { "" } callBack = { myCallback } />
                         </Grid>
                     </Grid>
                 </Container>
