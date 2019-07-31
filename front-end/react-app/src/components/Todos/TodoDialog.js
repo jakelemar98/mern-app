@@ -13,9 +13,9 @@ import { withStyles } from '@material-ui/core/styles';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Snackbar from '@material-ui/core/Snackbar';
 import Portal from '@material-ui/core/Portal';
-import Priorities from './Priorities';
-import Status from './Status';
-import UserSelect from './UserSelect';
+import Priorities from './PrioritiesDialog';
+import Status from './StatusDialog';
+import UserSelect from './UserDialog';
 import Message from './TextFields'
 
 const updatedValues = [];
