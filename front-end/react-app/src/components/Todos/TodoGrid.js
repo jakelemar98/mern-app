@@ -62,6 +62,9 @@ export default function TodoGrid(props) {
     const [status, setStatus] = React.useState("")
     const [worker, setWorker] = React.useState(0)
     const [priority, setPriority] = React.useState("")
+    const [curUser, setCurUser] = React.useState(0)
+    const [curPrior, setCurPrior] = React.useState(0)
+    const [curStat, setCurStat] = React.useState("")
 
     function handleClickOpen(index) {
         console.log(index);
@@ -80,13 +83,15 @@ export default function TodoGrid(props) {
         key = key.toLowerCase()
         updatedValues[key] = data;
         if (key === "status") {
-            console.log("status");
+            console.log(data);
+            
+            setCurStat(data)
             setStatus(data)
         } else if (key === "sugg_worker") {
-            console.log("worker");
+            setCurUser(data)
             setWorker(data)
         } else {
-            console.log(priority);
+            setCurPrior(data)
             setPriority(data)
         }
     }
@@ -96,6 +101,15 @@ export default function TodoGrid(props) {
         setAdd(true)
         setDisabled(false)        
         setOpen(true)
+    }
+
+    function handleReset(){        
+        setCurUser(0);
+        setCurPrior("");
+        setCurStat(0);
+        setWorker(0);
+        setStatus("");
+        setPriority("");
     }
 
     function CardFill(vals){        
@@ -169,22 +183,22 @@ export default function TodoGrid(props) {
                             <AddIcon />
                             Add Todo 
                         </Fab>
-                        <Fab variant="extended" aria-label="Delete" style={styles.fab}>
+                        <Fab variant="extended" aria-label="reset" onClick={handleReset} style={styles.fab}>
                             <CloudUploadIcon style={styles.leftIcon} /> 
-                            Show All
+                            Reset Sort
                         </Fab>
                     </div>
                 </Container>
                 <Container maxWidth="lg">
                     <Grid container spacing={3} style={styles.root} direction="row" justify="center" alignItems="center">
                         <Grid item xs={4}>
-                            <UserSelect user = { "" } users = { props.users } description = { "Assigned Worker" } field = { "sugg_worker" } callBack = { myCallback } />
+                            <UserSelect user = { curUser } users = { props.users } description = { "Assigned Worker" } field = { "sugg_worker" } callBack = { myCallback } />
                         </Grid>
                         <Grid item xs={4}>
-                            <Priorities priority = { "" } callBack = { myCallback } />
+                            <Priorities priority = { curPrior } callBack = { myCallback } />
                         </Grid>
                         <Grid item xs={4}>
-                            <Status status = { "" } callBack = { myCallback } />
+                            <Status status = { curStat } callBack = { myCallback } />
                         </Grid>
                     </Grid>
                 </Container>

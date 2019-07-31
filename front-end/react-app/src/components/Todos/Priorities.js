@@ -23,13 +23,14 @@ export default function Priorities(props) {
     const priorityArr = ["green", "orange", "red"];
     const priorityWordingArr = ['Low Priority', 'Medium Priority', 'HIGH PRIORITY'];
     const { priority } = props;
-    const [priorityVal, setPriorityVal] = React.useState(priority)
     const priorities = priorityWordingArr.map((item, key) =>
         <MenuItem style={{color: priorityArr[key]}} value={key + 1} key={key}>{item}</MenuItem>
     );
     
+    console.log(priority);
+    
+
     function handleChange(event) {
-        setPriorityVal(event.target.value);
         props.callBack("priority", event.target.value)
     }
 
@@ -38,13 +39,13 @@ export default function Priorities(props) {
             <FormControl className={ classes.formControl } disabled={props.disabled} >
                 <InputLabel htmlFor="demo-controlled-open-select">Priority</InputLabel>
                 <Select
-                    value={ priorityVal }
+                    value={ priority }
                     inputProps={{
                         name: 'age',
                         id: 'demo-controlled-open-select',
                     }}
                     onChange={handleChange}
-                    style={{color: priorityArr[priorityVal - 1]}}
+                    style={{color: priorityArr[priority - 1]}}
                     >
                     { priorities }
                 </Select>

@@ -19,16 +19,13 @@ const useStyles = makeStyles((theme: Theme) =>
   );
 export default function UserSelect(props) {
     const classes = useStyles();
-    const { user, users } = props;
-    
-    const [userVal, setUserVal] = React.useState(user)
+    const { user, users } = props;    
 
     const usersList = users.map((item, key) => 
         <MenuItem style={{color: "green"}} value={key} key={key}>{item}</MenuItem>
     );
     
     function handleChange(event) {
-        setUserVal(event.target.value);
         props.callBack(props.field, event.target.value)
     }
 
@@ -37,7 +34,7 @@ export default function UserSelect(props) {
             <FormControl className={ classes.formControl } disabled={props.disabled} >
                 <InputLabel htmlFor="user-selct">{ props.description }</InputLabel>
                 <Select
-                    value={ userVal }
+                    value={ user }
                     inputProps={{
                         name: 'age',
                         id: 'user-select',
