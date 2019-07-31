@@ -21,11 +21,6 @@ const styles = {
       title: {
         flexGrow: 1,
       },
-      card: {
-          display: 'flex',
-          height: 140,
-          background: "#DCDCDC" 
-      },
       details: {
           display: 'flex',
           flexDirection: 'column',
@@ -65,6 +60,8 @@ export default function TodoGrid(props) {
     const [curUser, setCurUser] = React.useState(0)
     const [curPrior, setCurPrior] = React.useState(0)
     const [curStat, setCurStat] = React.useState("")
+
+    const cardColors = ["#00cc00", "#ffb84d", "#ff4d4d"]
 
     function handleClickOpen(index) {
         console.log(index);
@@ -112,10 +109,13 @@ export default function TodoGrid(props) {
         setPriority("");
     }
 
-    function CardFill(vals){        
+    function CardFill(vals){
         var data = todos.filter(function(todo, index){
+            console.log(todo.status);
+            
             todo.index = index;
-            var trueStatus, trueWorker, truePriority = false
+            todo.priorityColor = todo.priority - 1;
+            var trueStatus, trueWorker, truePriority = false;
             
             if  (vals.status !== ""){
                 trueStatus = todo.status === vals.status;
@@ -140,17 +140,19 @@ export default function TodoGrid(props) {
             } else {
                 return false;
             }
-        }).map(function({title, sugg_worker, index}){
-            return createCards(title, sugg_worker, index)
+        }).map(function({title, sugg_worker, index, priorityColor}){
+            return createCards(title, sugg_worker, index, priorityColor)
         });
         
         return data;
     }
 
-    function createCards(title, sugg_worker, index){
+    function createCards(title, sugg_worker, index, color){
+        console.log(color);
+        
         return (
             <Grid item xs={4} key={index}>
-                <Card style={ styles.card } >
+                <Card style={{display: 'flex', height: 140, background: cardColors[color]}} >
                     <div style={styles.details}>
                         <CardContent style={styles.content}>
                             <Container>
