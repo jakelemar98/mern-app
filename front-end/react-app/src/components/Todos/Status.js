@@ -24,14 +24,12 @@ export default function Status(props) {
     const colorArr = ['blue', 'orange', 'green'];
     const statusArr = ['Created', 'In Development', 'Completed'];
     const { status } = props;
-    const [statusVal, setStatusVal] = React.useState(status)
     const statuses = statusArr.map((item, key) =>
         <MenuItem style={{color: colorArr[key]}} value={item} key={key}>{item}</MenuItem>
     );    
     const statusValIndex = statusArr.indexOf(status)
     const [statusColor, setStatusColor] = React.useState(colorArr[statusValIndex])
     function handleChange(event) {
-        setStatusVal(event.target.value);
         const newColor = statusArr.indexOf(event.target.value)
         setStatusColor(colorArr[newColor])  
         props.callBack("status", event.target.value)      
@@ -42,7 +40,7 @@ export default function Status(props) {
             <FormControl className={ classes.formControl } disabled={props.disabled} >
                 <InputLabel htmlFor="demo-controlled-open-select">Status</InputLabel>
                 <Select
-                    value={ statusVal }
+                    value={ status }
                     inputProps={{
                         name: 'status',
                         id: 'demo-controlled-open-select',
