@@ -16,7 +16,8 @@ mv ./k8s/mern-deployment.yml.out ./k8s/mern-deployment.yml
 envsubst <./k8s/mern-deployment-back.yml >./k8s/mern-deployment-back.yml.out
 mv ./k8s/mern-deployment-back.yml.out ./k8s/mern-deployment-back.yml
 
-echo "$COMMIT_SHA1"
+envsubst <./config >./config.out
+mv ./config.out ./config
 
 ./kubectl \
   --kubeconfig config \
