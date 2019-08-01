@@ -6,7 +6,7 @@ jobs:
     environment:
       IMAGE_NAME: jakelemar98/mern-app
       BACK_IMAGE_NAME: jakelemar98/mern-app-backend
-      CONFIG_IMAGE: jakelemar90/config-server
+      CONFIG_IMAGE: jakelemar98/config-server
     working_directory: ~/app
     steps:
       - checkout

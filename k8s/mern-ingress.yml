@@ -21,7 +21,11 @@ spec:
   - host: backend.jalema01-mern-app.com
     http:
       paths:
-      - backend:
+      - path: /api/*
+        backend:
           serviceName: mern-app-back
           servicePort: 8080
-      
+      - path: /config
+        backend:
+          serviceName: mern-app-back
+          servicePort: 8888
