@@ -10,6 +10,7 @@ spec:
   - hosts:
     - app.jalema01-mern-app.com
     - backend.jalema01-mern-app.com
+    - config.jalema01-mern-app.com
     secretName: letsencrypt-prod
   rules:
   - host: app.jalema01-mern-app.com
