@@ -6,6 +6,8 @@ spec:
   ports:
   - port: 8080
     targetPort: 5000
+  - port: 8888
+    targetPort: 8080
   selector:
     app: mern-app-back
 
@@ -32,3 +34,7 @@ spec:
           image: jakelemar98/mern-app-backend:$COMMIT_SHA1
           ports:
           - containerPort: 5000
+        - name : config-server
+          image:  jakelemar98/config-server:$COMMIT_SHA1
+          ports:
+          - containerPort: 8080

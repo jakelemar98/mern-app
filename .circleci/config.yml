@@ -11,13 +11,13 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run: cd back-end/node-app/ && npm install
-      - run:
-          name: Run Node.Js Tests
-          command: |
-            set -e
-            cd back-end/node-app
-            npm run test
+      # - run: cd back-end/node-app/ && npm install
+      # - run:
+      #     name: Run Node.Js Tests
+      #     command: |
+      #       set -e
+      #       cd back-end/node-app
+      #       npm run test
       - run:
           name: Build Docker image
           command: |
