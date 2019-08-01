@@ -1,3 +1,5 @@
+const app = require('express')();
+
 const SpringCloudConfig = require('spring-cloud-config');
  
 const configOptions = {
@@ -11,7 +13,6 @@ let myConfig;
 SpringCloudConfig.load(configOptions).then(theConfig => {
    myConfig = theConfig;
    console.log(myConfig.mongo.db.conn);
-   const app = require('express')();
    const port = myConfig.app.port
 
    var cors = require('cors');
@@ -307,8 +308,6 @@ SpringCloudConfig.load(configOptions).then(theConfig => {
            }
        });   
    }
-   
-   module.exports = app;
-
 });
+module.exports = app;
 
