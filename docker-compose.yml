@@ -13,6 +13,8 @@ services:
       - ./back-end/node-app/:/usr/src/app
     environment:
       NODE_ENV: development
+    depends_on:
+      - config-server
 
   frontend:
     container_name: react-app
@@ -25,3 +27,12 @@ services:
       - ./front-end/react-app/:/usr/src/app
     depends_on:
       - backend
+  
+  config-server:
+    container_name: config-server
+    build:
+      context: ./config-server/
+      dockerfile: Dockerfile
+    ports:
+      - "88:8888"
+    

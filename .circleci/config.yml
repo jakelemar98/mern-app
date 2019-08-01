@@ -6,6 +6,7 @@ jobs:
     environment:
       IMAGE_NAME: jakelemar98/mern-app
       BACK_IMAGE_NAME: jakelemar98/mern-app-backend
+      CONFIG_IMAGE: jakelemar90/config-server
     working_directory: ~/app
     steps:
       - checkout
@@ -21,6 +22,8 @@ jobs:
           name: Build Docker image
           command: |
             docker build -t $IMAGE_NAME:latest -f ./front-end/react-app/Dockerfile-prod ./front-end/react-app/
+            docker build -t $BACK_IMAGE_NAME:latest -f ./back-end/node-app/Dockerfile-prod ./back-end/node-app/
+            docker build -t $CONFIG_IMAGE:latest -f ./config-server/Dockerfile ./config-server/
       - run:
           name: Push Docker Image
           command: |
@@ -28,17 +31,12 @@ jobs:
             docker tag $IMAGE_NAME:latest $IMAGE_NAME:$CIRCLE_SHA1
             docker push $IMAGE_NAME:latest
             docker push $IMAGE_NAME:$CIRCLE_SHA1
-      - run:
-          name: Build Docker image
-          command: |
-            docker build -t $BACK_IMAGE_NAME:latest -f ./back-end/node-app/Dockerfile-prod ./back-end/node-app/
-      - run:
-          name: Push Docker Image
-          command: |
-            docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASS"
             docker tag $BACK_IMAGE_NAME:latest $BACK_IMAGE_NAME:$CIRCLE_SHA1
             docker push $BACK_IMAGE_NAME:latest
             docker push $BACK_IMAGE_NAME:$CIRCLE_SHA1
+            docker tag $CONFIG_IMAGE:latest $CONFIG_IMAGE:$CIRCLE_SHA1
+            docker push $CONFIG_IMAGE:latest
+            docker push $CONFIG_IMAGE:$CIRCLE_SHA1
       - run:
           name: PR Check
           command: |

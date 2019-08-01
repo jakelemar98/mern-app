@@ -1,0 +1,6 @@
+spring:
+   cloud:
+      config:
+         enabled: true
+         endpoint: http://config-server:8888
+         label: master

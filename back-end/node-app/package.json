@@ -17,7 +17,8 @@
     "express": "^4.17.1",
     "express-mongo-db": "^2.0.4",
     "jsonwebtoken": "^8.5.1",
-    "mongo": "^0.1.0"
+    "mongo": "^0.1.0",
+    "spring-cloud-config": "^4.6.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
