@@ -16,6 +16,9 @@ mv ./k8s/mern-deployment.yml.out ./k8s/mern-deployment.yml
 envsubst <./k8s/mern-deployment-back.yml >./k8s/mern-deployment-back.yml.out
 mv ./k8s/mern-deployment-back.yml.out ./k8s/mern-deployment-back.yml
 
+envsubst <./k8s/mern-config-deployment.yml >./k8s/mern-config-deployment.yml.out
+mv ./k8s/mern-config-deployment.yml.out ./k8s/mern-config-deployment.yml
+
 envsubst <./config >./config.out
 mv ./config.out ./config
 
