@@ -18,12 +18,23 @@ export class LoginForm extends Component {
   
   componentDidMount() {
     if(Auth.isAuthenticated()){
-      this.props.history.push("/dashboard")
     }
   }
 
-  login = e => {    
+  handleEnter = e => {
     e.preventDefault();
+    if(e.key === 'Enter'){
+      this.login()
+    }
+    
+  }
+
+  login2= () =>{
+    this.props.history.push("/welcome")
+  }
+
+  login = e => {    
+    // e.preventDefault();
     var url = process.env.REACT_APP_API_URI + 'login'
     fetch(url, {
     	method: "POST",
@@ -46,7 +57,7 @@ export class LoginForm extends Component {
     .then((responseData) => {
       localStorage.setItem('token', responseData.token);
       Auth.login( () => {
-        this.props.history.push("/dashboard")
+            this.props.history.push("/dashboard")
       });
     })
     .catch(error => console.warn("big error" + error));    
@@ -73,6 +84,7 @@ export class LoginForm extends Component {
             floatingLabelText="Password"
             onChange={handleChange('password')}
             defaultValue={values.password}
+            onKeyUp={this.handleEnter}
           />
           <br />
           <RaisedButton
@@ -80,6 +92,7 @@ export class LoginForm extends Component {
             primary={true}
             style={styles.button}
             onClick={this.login}
+            onKeyDown={this.hadleKeyDown}
           />
         </React.Fragment>
       </MuiThemeProvider>
