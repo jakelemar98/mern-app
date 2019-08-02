@@ -4,3 +4,9 @@ spring:
          enabled: true
          endpoint: http://config-server:8080
          label: master
+---
+profiles: dev
+spring:
+   cloud:
+      config:
+         endpoint: http://config-server:8888

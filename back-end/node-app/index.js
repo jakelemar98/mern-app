@@ -1,15 +1,19 @@
 const app = require('express')();
 
+require('custom-env').env(true)
+
 const SpringCloudConfig = require('spring-cloud-config');
  
 const configOptions = {
     configPath: __dirname + '/config',
-    activeProfiles: ['prod'],
+    activeProfiles: [process.env.APP_PROFILE],
     level: 'info'
 };
 
 let myConfig;
- 
+
+console.log(process.env.APP_PROFILE)
+
 SpringCloudConfig.load(configOptions).then(theConfig => {
    myConfig = theConfig;
    console.log(myConfig);
@@ -17,7 +21,7 @@ SpringCloudConfig.load(configOptions).then(theConfig => {
    const port = myConfig.app.port
 
    var cors = require('cors');
-   app.use(cors());
+   app.use(cors());   
    const Bcrypt = require("bcryptjs");
    const jwt = require('jsonwebtoken')
    
