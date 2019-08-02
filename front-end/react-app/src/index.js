@@ -4,6 +4,8 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
 import Dashboard from './components/Dashboard'
 import LoginForm from './components/LoginForm';
+import 'font-awesome/css/font-awesome.min.css';
+import Account from './components/Account/Account'
 import './App.css';
 import Account from './components/Account'
 import Welcome from './components/Welcome'
