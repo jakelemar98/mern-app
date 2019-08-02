@@ -18,6 +18,7 @@ export class LoginForm extends Component {
   
   componentDidMount() {
     if(Auth.isAuthenticated()){
+      this.props.history.push("/dashboard")
     }
   }
 
@@ -29,9 +30,6 @@ export class LoginForm extends Component {
     
   }
 
-  login2= () =>{
-    this.props.history.push("/welcome")
-  }
 
   login = e => {    
     // e.preventDefault();
@@ -57,7 +55,7 @@ export class LoginForm extends Component {
     .then((responseData) => {
       localStorage.setItem('token', responseData.token);
       Auth.login( () => {
-            this.props.history.push("/dashboard")
+        this.props.history.push("/dashboard")
       });
     })
     .catch(error => console.warn("big error" + error));    
@@ -92,7 +90,6 @@ export class LoginForm extends Component {
             primary={true}
             style={styles.button}
             onClick={this.login}
-            onKeyDown={this.hadleKeyDown}
           />
         </React.Fragment>
       </MuiThemeProvider>
