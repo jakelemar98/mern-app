@@ -22,8 +22,17 @@ export class LoginForm extends Component {
     }
   }
 
-  login = e => {    
+  handleEnter = e => {
     e.preventDefault();
+    if(e.key === 'Enter'){
+      this.login()
+    }
+    
+  }
+
+
+  login = e => {    
+    // e.preventDefault();
     var url = process.env.REACT_APP_API_URI + 'login'
     fetch(url, {
     	method: "POST",
@@ -73,6 +82,7 @@ export class LoginForm extends Component {
             floatingLabelText="Password"
             onChange={handleChange('password')}
             defaultValue={values.password}
+            onKeyUp={this.handleEnter}
           />
           <br />
           <RaisedButton
