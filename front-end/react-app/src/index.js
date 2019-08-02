@@ -5,8 +5,8 @@ import { Route, BrowserRouter, Switch } from 'react-router-dom'
 import Dashboard from './components/Dashboard'
 import LoginForm from './components/LoginForm';
 import './App.css';
-import 'font-awesome/css/font-awesome.min.css';
-import Account from './components/Account/Account'
+import Account from './components/Account'
+import Welcome from './components/Welcome'
 function App() {
   return (
     <div className="App">
@@ -14,6 +14,7 @@ function App() {
         <Route exact path="/" component={LoginForm} />
         <ProtectedRoute exact path="/dashboard" component={Dashboard} />
         <ProtectedRoute exact path="/account" component={Account} />
+        <ProtectedRoute exact path="/welcome" component={Welcome}/>
         <Route path="*" component={() => "404 NOT FOUND"} />
       </Switch>
     </div>
