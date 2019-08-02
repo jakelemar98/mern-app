@@ -12,7 +12,8 @@ let myConfig;
  
 SpringCloudConfig.load(configOptions).then(theConfig => {
    myConfig = theConfig;
-   console.log(myConfig.mongo.db.conn);
+   console.log(myConfig);
+   
    const port = myConfig.app.port
 
    var cors = require('cors');
