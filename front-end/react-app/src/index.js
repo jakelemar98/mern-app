@@ -6,7 +6,7 @@ import Dashboard from './components/Dashboard'
 import LoginForm from './components/LoginForm';
 import 'font-awesome/css/font-awesome.min.css';
 import './App.css';
-import Account from './components/Account'
+import Account from './components/Account/Account'
 import Welcome from './components/Welcome'
 function App() {
   return (
