@@ -21,6 +21,8 @@ export class LoginForm extends Component {
       if (Auth.userIsAdmin()){
         this.props.history.push("/dashboard")        
       } else {
+        console.log("here");
+        
         this.props.history.push("/home")
       }
     } 
@@ -58,8 +60,8 @@ export class LoginForm extends Component {
     })
     .then((responseData) => {
       localStorage.setItem('token', responseData.token);
-      Auth.login( (group) => {
-        if (group === "Admin"){
+      Auth.login( (admin) => {        
+        if (admin){
           this.props.history.push("/dashboard")
         } else  {
           this.props.history.push("/home")

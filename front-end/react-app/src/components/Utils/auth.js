@@ -7,9 +7,9 @@ class Auth {
   
     login(cb) {
       this.authenticated = true;
-      this.checkUserGroup().then( (response) => {
-        this.userGroup = response
-        cb(this.userGroup);
+      this.userIsAdmin().then( (response) => {
+        this.isAdmin = response
+        cb(this.isAdmin);
       })
     }
   
@@ -17,22 +17,6 @@ class Auth {
       localStorage.removeItem('token')
       this.authenticated = false;
       cb();
-    }
-  
-
-    checkUserGroup() {
-      var url = process.env.REACT_APP_API_URI + 'user'
-      var token = localStorage.getItem("token");  
-      if (token){        
-        return checkAuth(url, token, true).then( (response) => {                  
-          this.userGroup = response
-          return this.userGroup
-        }) ;
-      } else {
-        this.authenticated = false;
-        localStorage.removeItem('token')
-        return this.authenticated;
-      }
     }
 
     userIsAdmin() {
