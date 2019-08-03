@@ -132,7 +132,7 @@ export default function TodoDialog(props) {
                   return response.json()
                 } else if (response.status === 403){
                   alert("Please sign in and try again")
-                  props.history.push("/")
+                  props.history.push("/login")
                 }
             }).then((responseData) => {
                     if (req_type === "DELETE" || req_type === "POST" || responseData.obj.nModified > 0) {

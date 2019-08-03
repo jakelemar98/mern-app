@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { ProtectedRoute } from './components/Utils/ProtectedRoute';
+import NotFound from './components/Utils/NotFound'
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
 import Dashboard from './components/Admin/Dashboard'
 import LoginForm from './components/Entry/LoginForm';
@@ -12,11 +13,11 @@ function App() {
   return (
     <div className="App">
       <Switch>
-        <Route exact path="/" component={LoginForm} />
+        <Route exact path="/login" component={LoginForm} />
         <ProtectedRoute exact path="/dashboard" component={Dashboard} />
         <ProtectedRoute exact path="/account" component={Account} />
-        <ProtectedRoute exact path="/welcome" component={Welcome}/>
-        <Route path="*" component={() => "404 NOT FOUND"} />
+        <Route exact path="/" component={Welcome}/>
+        <Route path="*" component={NotFound} />
       </Switch>
     </div>
   );
@@ -25,7 +26,7 @@ function App() {
 const rootElement = document.getElementById("root");
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+     <App />
   </BrowserRouter>,
   rootElement
 );

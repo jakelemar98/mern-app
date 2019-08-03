@@ -55,7 +55,7 @@ export default function AccountPassDialog(props) {
                     alert("Old Password does not match")
                 } else if (response.status === 403){
                   alert("Please sign in and try again")
-                  props.history.push("/")
+                  props.history.push("/login")
                 }
             }).then((responseData) => {
                 if(responseData.obj.nModified > 0){

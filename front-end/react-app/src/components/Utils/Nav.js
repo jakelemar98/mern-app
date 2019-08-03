@@ -41,7 +41,7 @@ export default function MenuAppBar(props) {
 
     function logout(){
         auth.logout( () => {
-            props.history.push("/")
+            props.history.push("/login")
         })
     }
 

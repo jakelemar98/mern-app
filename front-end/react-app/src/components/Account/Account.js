@@ -156,7 +156,7 @@ export class Account extends Component {
               })
               .then((responseData) => {
                 if(responseData === 403){
-                    this.props.history.push("/")              
+                    this.props.history.push("/login")              
                 } else {
                     localStorage.setItem('token', responseData.token);
                     this.setState(this.initialState)

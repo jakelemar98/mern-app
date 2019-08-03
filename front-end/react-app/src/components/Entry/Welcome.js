@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function PermanentDrawerLeft() {
+export default function PermanentDrawerLeft(props) {
   const classes = useStyles();
 
   
@@ -67,16 +67,13 @@ export default function PermanentDrawerLeft() {
         <div className={classes.toolbar} />
         <Divider />
         <List>
-            <ListItem button key={"Dash"}>
-                <Button to="/Dashboard">
-
-                </Button>
-
-            </ListItem>
           {['Dashboard','William'].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{index % 2 === 0 ? <DashIcon /> : <DisabledIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
+              <a onClick={ () => props.history.push("/dashboard") }>
+              <ListItemText primary={text}/>
+
+              </a>
             </ListItem>
           ))}
         </List>
@@ -84,15 +81,7 @@ export default function PermanentDrawerLeft() {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Typography paragraph>
-          <h1>
-              Welcome
-          </h1>
-          <h1>
-              This page was 100% made by Jack
-          </h1>
-          <h5>
-              Jake and Will.I.Am did nothing
-          </h5>
+
 
         </Typography>
       </main>
