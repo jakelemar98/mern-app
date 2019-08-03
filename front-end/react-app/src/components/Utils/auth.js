@@ -26,11 +26,11 @@ class Auth {
       if (token){        
         return checkAuth(url, token, true).then( (response) => {                  
           this.userGroup = response
-          console.log(this.userGroup);   
           return this.userGroup
         }) ;
       } else {
         this.authenticated = false;
+        localStorage.removeItem('token')
         return this.authenticated;
       }
     }
@@ -40,7 +40,7 @@ class Auth {
       var token = localStorage.getItem("token");  
       if (token){        
         return checkAuth(url, token, true).then( (response) => {                  
-          if(response === "Admin") {
+          if(response) {
             this.isAdmin = true;
           } else {
             this.isAdmin = false;
@@ -49,6 +49,7 @@ class Auth {
         }) ;
       } else {
         this.authenticated = false;
+        localStorage.removeItem('token')
         return this.authenticated;
       }
     }
@@ -63,6 +64,7 @@ class Auth {
         }) ;
       } else {
         this.authenticated = false;
+        localStorage.removeItem('token')
         return this.authenticated;
       }
     }
@@ -78,10 +80,10 @@ class Auth {
       .then(res => res.json())
       .then( (result) => {
           if (getGroup) {
-            var group = result.groups[0];
+            var group = result.groups.includes("Admin");
             return group;
           } else {
-            var authenticated = true;
+            var authenticated = result.groups.includes("User");
             return authenticated
           }
         },

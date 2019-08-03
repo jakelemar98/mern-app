@@ -21,7 +21,6 @@ export class LoginForm extends Component {
       if (Auth.userIsAdmin()){
         this.props.history.push("/dashboard")        
       } else {
-        console.log("here");
         this.props.history.push("/home")
       }
     } 

@@ -13,9 +13,7 @@ export const ProtectedAdminRoute = ({
         
         if (auth.isAuthenticated() && auth.userIsAdmin()) {
           return <Component {...props} />;
-        } else {     
-          console.log(auth.checkUserGroup(), "redirecting" );
-           
+        } else {                
           return (
             <Redirect
               to={{
