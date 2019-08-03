@@ -10,6 +10,7 @@ import Nav from '../Utils/Nav'
 import img from '../../static/images/avatar/tiger.jpg'; 
 import RaisedButton from 'material-ui/RaisedButton';
 import PasswordDialog from './AccountPassDialog';
+import SweetAlert from 'react-bootstrap-sweetalert'
 
 export class Account extends Component {
 
@@ -25,7 +26,8 @@ export class Account extends Component {
             first: "",
             last: "",
             display: "none",
-            open: false
+            open: false,
+            show: false
         };
 
         this.initialState = this.state
@@ -82,7 +84,7 @@ export class Account extends Component {
             isDisabled =  false;
             label = "Cancel Changes";
             this.setState({
-                display: "block"
+                display: "block",
             })
         } else {
             var name = this.state.user.name.split(" ");
@@ -164,17 +166,16 @@ export class Account extends Component {
                 }
               })
         } else {
-            alert("Please Change A Value")
+            this.setState({ show: true })
         }
+    }
+
+    valueSelect = e => {
+        this.setState({ show: false })
     }
 
     render() {
         const { error, isLoaded, username, first, last, display, open } = this.state;
-
-        // var userArr = user.name.split(" ");
-        // const firstname = userArr[0];
-        // const lastname = userArr[1];
-        
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
@@ -247,7 +248,15 @@ export class Account extends Component {
                                 </Card>
                             </div>
                             <PasswordDialog open = { open } onClose={this.handleClose} id={this.state.user._id} history={this.props.history} />
-                        </React.Fragment>
+                            <SweetAlert
+                                warning
+                                confirmBtnText="OK"
+                                title="Must Change A Value"
+                                onConfirm={this.valueSelect}
+                                show = {this.state.show}
+                            >
+                            </SweetAlert>
+                            </React.Fragment>
                     </MuiThemeProvider>
                 </div>
             )

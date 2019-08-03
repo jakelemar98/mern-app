@@ -19,6 +19,7 @@
     "express-mongo-db": "^2.0.4",
     "jsonwebtoken": "^8.5.1",
     "mongo": "^0.1.0",
+    "react-bootstrap-sweetalert": "^4.4.1",
     "spring-cloud-config": "^4.6.2"
   },
   "devDependencies": {
