@@ -6,6 +6,7 @@ import NotFound from './components/Utils/NotFound'
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
 import Dashboard from './components/Admin/Dashboard'
 import LoginForm from './components/Entry/LoginForm';
+import Register from './components/Entry/Register'
 import Welcome from './components/Entry/Welcome'
 import Account from './components/Account/Account'
 import homepage from './components/Management/Homepage'
@@ -17,6 +18,7 @@ function App() {
     <div className="App">
       <Switch>
         <Route exact path="/login" component={LoginForm} />
+        <Route exact path="/register" component={Register} />
         <ProtectedAdminRoute exact path="/dashboard" component={Dashboard} />
         <ProtectedAdminRoute exact path="/account" component={Account} />
         <ProtectedRoute exact path="/home" component={homepage} />

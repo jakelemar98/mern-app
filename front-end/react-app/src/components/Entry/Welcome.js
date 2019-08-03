@@ -18,6 +18,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import Button from '@material-ui/core/Button';
+import Register from './Register';
 
 const drawerWidth = 240;
 
@@ -86,6 +87,7 @@ export default function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [dialogOpen, setDialog] = React.useState(false)
 
   function handleDrawerOpen() {
     setOpen(true);
@@ -97,6 +99,14 @@ export default function MiniDrawer(props) {
 
   function login() {
     props.history.push("/login")
+  }
+
+  function onClose(){
+    setDialog(false)
+  }
+
+  function signUp() {
+    setDialog(true)      
   }
 
   return (
@@ -123,6 +133,7 @@ export default function MiniDrawer(props) {
           <Typography variant="h6" noWrap style={{ flexGrow: 1 }}>
             Roster Management
           </Typography>
+          <Button color="inherit" onClick={signUp}>Sign Up</Button>
           <Button color="inherit" onClick={login}>Login</Button>
         </Toolbar>
       </AppBar>
@@ -167,6 +178,7 @@ export default function MiniDrawer(props) {
       <main className={classes.content}>
 
       </main>
+      <Register open = {dialogOpen} onClose={ onClose } />
     </div>
   );
 }
