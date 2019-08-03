@@ -1,13 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ProtectedRoute } from './components/ProtectedRoute';
+import { ProtectedRoute } from './components/Utils/ProtectedRoute';
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
-import Dashboard from './components/Dashboard'
-import LoginForm from './components/LoginForm';
+import Dashboard from './components/Admin/Dashboard'
+import LoginForm from './components/Entry/LoginForm';
 import 'font-awesome/css/font-awesome.min.css';
 import './App.css';
 import Account from './components/Account/Account'
-import Welcome from './components/Welcome'
+import Welcome from './components/Entry/Welcome'
 function App() {
   return (
     <div className="App">

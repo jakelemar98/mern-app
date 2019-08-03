@@ -6,7 +6,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Nav from '../Nav'
+import Nav from '../Utils/Nav'
 import img from '../../static/images/avatar/tiger.jpg'; 
 import RaisedButton from 'material-ui/RaisedButton';
 import PasswordDialog from './AccountPassDialog';

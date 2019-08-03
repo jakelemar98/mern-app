@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import Auth from './auth';
-import Nav from './Nav';
+import Auth from '../Utils/auth';
+import Nav from '../Utils/Nav';
 
 export class LoginForm extends Component {
   state = {

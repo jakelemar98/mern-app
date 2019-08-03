@@ -10,7 +10,6 @@ spec:
   - hosts:
     - app.jalema01-mern-app.com
     - backend.jalema01-mern-app.com
-    - config.jalema01-mern-app.com
     secretName: letsencrypt-prod
   rules:
   - host: app.jalema01-mern-app.com
@@ -25,10 +24,5 @@ spec:
       - backend:
           serviceName: mern-app-back
           servicePort: 8080
-  # - host: config.jalema01-mern-app.com
-  #   http:
-  #     paths:
-  #     - backend:
-  #         serviceName: config-server
-  #         servicePort: 8080
+
 
