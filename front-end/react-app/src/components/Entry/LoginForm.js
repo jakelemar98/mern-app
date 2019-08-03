@@ -17,9 +17,14 @@ export class LoginForm extends Component {
   };
   
   componentDidMount() {
-    if(Auth.isAuthenticated()){
-      this.props.history.push("/dashboard")
-    }
+    if(Auth.isAuthenticated()){              
+      if (Auth.userIsAdmin()){
+        this.props.history.push("/dashboard")        
+      } else {
+        console.log("here");
+        this.props.history.push("/home")
+      }
+    } 
   }
 
   handleEnter = e => {
@@ -54,8 +59,12 @@ export class LoginForm extends Component {
     })
     .then((responseData) => {
       localStorage.setItem('token', responseData.token);
-      Auth.login( () => {
-        this.props.history.push("/dashboard")
+      Auth.login( (group) => {
+        if (group === "Admin"){
+          this.props.history.push("/dashboard")
+        } else  {
+          this.props.history.push("/home")
+        }
       });
     })
     .catch(error => console.warn("big error" + error));    

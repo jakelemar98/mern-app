@@ -63,9 +63,7 @@ export default function TodoGrid(props) {
 
     const cardColors = ["#00cc00", "#ffb84d", "#ff4d4d"]
 
-    function handleClickOpen(index) {
-        console.log(index);
-        
+    function handleClickOpen(index) {        
         setData(todos[index])
         setAdd(false)
         setDisabled(true)
@@ -79,9 +77,7 @@ export default function TodoGrid(props) {
     const myCallback = (key, data) => {
         key = key.toLowerCase()
         updatedValues[key] = data;
-        if (key === "status") {
-            console.log(data);
-            
+        if (key === "status") {            
             setCurStat(data)
             setStatus(data)
         } else if (key === "sugg_worker") {
@@ -110,9 +106,7 @@ export default function TodoGrid(props) {
     }
 
     function CardFill(vals){
-        var data = todos.filter(function(todo, index){
-            console.log(todo.status);
-            
+        var data = todos.filter(function(todo, index){            
             todo.index = index;
             todo.priorityColor = todo.priority - 1;
             var trueStatus, trueWorker, truePriority = false;
@@ -147,9 +141,7 @@ export default function TodoGrid(props) {
         return data;
     }
 
-    function createCards(title, sugg_worker, index, color){
-        console.log(color);
-        
+    function createCards(title, sugg_worker, index, color){        
         return (
             <Grid item xs={4} key={index}>
                 <Card style={{display: 'flex', height: 140, background: cardColors[color]}} >

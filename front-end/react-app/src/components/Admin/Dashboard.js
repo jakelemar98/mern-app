@@ -33,9 +33,7 @@ export class Dashboard extends Component {
           }
         })
           .then(res => res.json())
-          .then( (result) => {
-            console.log(result);
-            
+          .then( (result) => {            
                 this.setState({
                     dashIsLoaded: true,
                     todos: result.results
@@ -45,7 +43,7 @@ export class Dashboard extends Component {
               this.setState({
                 dashIsLoaded: true,
                 dashError: error
-              });
+              });  
             }
           )
       }
