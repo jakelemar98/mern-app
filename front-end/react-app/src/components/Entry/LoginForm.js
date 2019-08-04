@@ -66,6 +66,8 @@ export class LoginForm extends Component {
         if (admin){          
           this.props.history.push("/dashboard")
         } else  {
+          console.log("i dunno");
+          
           this.props.history.push("/home")
         }
       });

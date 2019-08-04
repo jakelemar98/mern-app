@@ -1,9 +1,21 @@
 import React from 'react';
 import { Route, Redirect } from "react-router-dom";
-
-const ProtectedRoute = ({component: Component, isAuthenticated, isLoading, ...rest }) => { 
-  console.log(isLoading);
+import Auth from './auth'
+const ProtectedRoute = ({component: Component, ...rest }) => {
   
+  const [isAuth, setAuth] = React.useState(false);
+  const [isLoading, setLoad] = React.useState(true);
+
+  Auth.isAuthenticated().then( (result) => {
+    if(result){
+      setAuth(true)
+      setLoad(false)
+    } else {
+      setAuth(false)
+      setLoad(false)
+    }
+  })
+
   return (
     <Route
       {...rest}
@@ -11,7 +23,7 @@ const ProtectedRoute = ({component: Component, isAuthenticated, isLoading, ...re
       if(isLoading) {
           return <div>Loading...</div>
       }      
-      if(!isAuthenticated) {
+      if(!isAuth) {        
           return <Redirect to="/login" />
       }
       return <Component {...props} /> 
