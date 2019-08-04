@@ -22,10 +22,9 @@ export class Dashboard extends Component {
       }
       
       fetchDashItems = e => {
-        var url = process.env.REACT_APP_API_URI + 'todos';
-
+        var url = process.env.REACT_APP_API_URI + 'todos';      
         var token = localStorage.getItem('token');
-
+        
         fetch(url, {
             method: "GET",
           headers: {
@@ -40,6 +39,8 @@ export class Dashboard extends Component {
                 });                
             },
             (error) => {
+              console.log(error);
+              
               this.setState({
                 dashIsLoaded: true,
                 dashError: error

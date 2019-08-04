@@ -10,7 +10,8 @@ jobs:
     working_directory: ~/app
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+         docker_layer_caching: true 
       # - run: cd back-end/node-app/ && npm install
       # - run:
       #     name: Run Node.Js Tests

@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { ProtectedAdminRoute } from './components/Utils/ProtectedAdminRoute';
 import { ProtectedRoute } from './components/Utils/ProtectedRoute';
+import  Auth  from './components/Utils/auth'
 import NotFound from './components/Utils/NotFound'
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
 import Dashboard from './components/Admin/Dashboard'
@@ -14,6 +15,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import './App.css';
 
 function App() {
+
   return (
     <div className="App">
       <Switch>

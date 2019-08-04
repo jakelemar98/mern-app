@@ -17,15 +17,17 @@ export class LoginForm extends Component {
   };
   
   componentDidMount() {
-    if(Auth.isAuthenticated()){              
-      if (Auth.userIsAdmin()){
-        this.props.history.push("/dashboard")        
-      } else {
-        console.log("here");
-        
-        this.props.history.push("/home")
+    Auth.isAuthenticated().then((result) => {
+      if(result){        
+        Auth.userIsAdmin().then((result) => {
+          if (result) {
+            this.props.history.push("/dashboard")        
+          } else {            
+            this.props.history.push("/home")
+          }
+        })
       }
-    } 
+    })
   }
 
   handleEnter = e => {
@@ -60,10 +62,12 @@ export class LoginForm extends Component {
     })
     .then((responseData) => {
       localStorage.setItem('token', responseData.token);
-      Auth.login( (admin) => {        
-        if (admin){
+      Auth.login( (admin) => { 
+        if (admin){          
           this.props.history.push("/dashboard")
         } else  {
+          console.log("i dunno");
+          
           this.props.history.push("/home")
         }
       });
@@ -78,7 +82,7 @@ export class LoginForm extends Component {
     return (
       <MuiThemeProvider>
         <React.Fragment>
-          <Nav menuName={"App Login"} selected={[0,0]}/>
+          <Nav menuName={"App Login"} selected={[false,false]}/>
           <TextField
             hintText="Enter Your Username"
             floatingLabelText="Username"
