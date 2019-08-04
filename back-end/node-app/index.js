@@ -41,7 +41,7 @@ SpringCloudConfig.load(configOptions).then(theConfig => {
    
    app.get('/api/user', verifyToken, getUser)
    
-   app.post("/api/users/:user_id", verifyToken, addUser)
+   app.post("/api/users", verifyToken, addUser)
    
    app.put('/api/users/:user_id', verifyToken, updateUser)
    

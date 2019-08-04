@@ -63,11 +63,13 @@ class Auth {
     })
       .then(res => res.json())
       .then( (result) => {
+          console.log(result);
+          
           if (getGroup) {
-            var group = result.groups.includes("Admin");
+            var group = result.user_groups.includes("Admin");
             return group;
           } else {
-            var authenticated = result.groups.includes("User");
+            var authenticated = result.user_groups.includes("User");
             return authenticated
           }
         },
