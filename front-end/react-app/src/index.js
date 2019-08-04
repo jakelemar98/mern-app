@@ -2,12 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { ProtectedAdminRoute } from './components/Utils/ProtectedAdminRoute';
 import { ProtectedRoute } from './components/Utils/ProtectedRoute';
-import  Auth  from './components/Utils/auth'
 import NotFound from './components/Utils/NotFound'
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
 import Dashboard from './components/Admin/Dashboard'
 import LoginForm from './components/Entry/LoginForm';
-import Register from './components/Entry/Register'
+import Register from './components/Entry/Register/Register'
 import Welcome from './components/Entry/Welcome'
 import Account from './components/Account/Account'
 import homepage from './components/Management/Homepage'

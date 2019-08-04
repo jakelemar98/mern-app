@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Nav from '../Utils/Nav'
-import Todo from '../Todos/TodoGrid'
+import Todo from './Todos/TodoGrid'
 
 export class Dashboard extends Component {
     constructor(props) {
