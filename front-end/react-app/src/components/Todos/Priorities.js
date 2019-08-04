@@ -25,10 +25,7 @@ export default function Priorities(props) {
     const { priority } = props;
     const priorities = priorityWordingArr.map((item, key) =>
         <MenuItem style={{color: priorityArr[key]}} value={key + 1} key={key}>{item}</MenuItem>
-    );
-    
-    console.log(priority);
-    
+    );    
 
     function handleChange(event) {
         props.callBack("priority", event.target.value)

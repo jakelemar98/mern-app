@@ -1,31 +1,21 @@
-import React from "react";
+import React from 'react';
 import { Route, Redirect } from "react-router-dom";
-import auth from "./auth";
 
-export const ProtectedAdminRoute = ({
-  component: Component,
-  ...rest
-}) => {
+const ProtectedAdminRoute = ({component: Component, isAuthenticated, isLoading, ...rest }) => { 
+
   return (
     <Route
       {...rest}
       render={props => {
-        
-        if (auth.isAuthenticated() && auth.userIsAdmin()) {
-          return <Component {...props} />;
-        } else {                
-          return (
-            <Redirect
-              to={{
-                pathname: "/",
-                state: {
-                  from: props.location
-                } 
-              }}
-            />
-          );
-        }
+        if(isLoading) {
+          return <div>Loading...</div>
+      }
+      if(!isAuthenticated) {
+          return <Redirect to="/home" />
+      }
+      return <Component {...props} /> 
       }}
     />
-  );
-};
+  )
+}
+export { ProtectedAdminRoute };
