@@ -1,6 +1,5 @@
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
@@ -118,15 +117,6 @@ export default function SignUp() {
                 </Grid>
 
             </Grid>
-            <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-            >
-                Create Team
-            </Button>
             <Grid container justify="flex-end">
                 <Grid item>
                 <Link onClick={teamCodeOpen} >

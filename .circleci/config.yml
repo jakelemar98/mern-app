@@ -20,6 +20,11 @@ jobs:
       #       cd back-end/node-app
       #       npm run test
       - run:
+          name: Populate Config Server Git Properities
+          command: |
+            sudo apt-get update && sudo apt-get -y install gettext-base
+            ./scripts/populateConfig.sh
+      - run:
           name: Build Docker image
           command: |
             docker build -t $IMAGE_NAME:latest -f ./front-end/react-app/Dockerfile-prod ./front-end/react-app/

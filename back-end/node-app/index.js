@@ -12,11 +12,8 @@ const configOptions = {
 
 let myConfig;
 
-console.log(process.env.APP_PROFILE)
-
 SpringCloudConfig.load(configOptions).then(theConfig => {
    myConfig = theConfig;
-   console.log(myConfig);
    
    const port = myConfig.app.port
 
@@ -36,23 +33,17 @@ SpringCloudConfig.load(configOptions).then(theConfig => {
    // ROUTE
    
    app.post('/api/login', login);
-   
-   app.get('/api/users', verifyToken, getUsers)
-   
+
    app.get('/api/user', verifyToken, getUser)
-   
+   app.get('/api/users', verifyToken, getUsers)   
    app.post("/api/users", verifyToken, addUser)
-   
+   app.get('/api/user/:username', checkUser)
    app.put('/api/users/:user_id', verifyToken, updateUser)
-   
    app.put('/api/users/password/:id', verifyToken, updateUserPass)
    
    app.get('/api/todos', verifyToken, getTodos);
-   
    app.post('/api/todos', verifyToken, addTodo);
-   
    app.put('/api/todos/:todo',verifyToken, updateTodo)
-   
    app.delete('/api/todos/:todo',verifyToken, deleteTodo)
    
    app.get("/api/unitTest", (req, res) => {
@@ -129,6 +120,22 @@ SpringCloudConfig.load(configOptions).then(theConfig => {
        });
    }
 
+   function checkUser(req, res){
+        var username = req.params.username;
+        var dbo = req.db.db("app");
+        try {
+            dbo.collection("users").findOne({ username: username }, function(err, result){                    
+                if (!result) {
+                    res.status(200).send({ result: false })
+                } else {
+                    res.status(200).send({ result: true })
+                }
+            })
+        } catch (error) {
+            res.sendStatus(500);
+        }
+   }
+
    function addUser(req, res){
     try {
         req.body.password = Bcrypt.hashSync(req.body.password, 10);
@@ -136,7 +143,6 @@ SpringCloudConfig.load(configOptions).then(theConfig => {
         
         var myobj = {
                 name: req.body.name,
-                user_id: req.param.user_id,
                 username: req.body.username,
                 password: req.body.password,
                 user_groups: ["User"]
@@ -148,9 +154,7 @@ SpringCloudConfig.load(configOptions).then(theConfig => {
                 response
             });
         });
-    } catch (error) {
-        console.log(error);
-        
+    } catch (error) {        
         res.sendStatus(500);
     }
    }

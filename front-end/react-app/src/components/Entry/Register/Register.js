@@ -20,44 +20,94 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     marginRight: theme.spacing(1),
-  },
+    marginTop: theme.spacing(1)
+},
   instructions: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
 }));
 
-function getSteps(props) {
-  return ['Sign Up', 'Team Sign Up', 'Complete'];
-}
-
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <SignUpForm />;
-    case 1:
-      return <TeamSignUp />;
-    case 2:
-      return <Complete />;
-    default:
-      return 'Unknown step';
-  }
-}
 
 export default function Register(props) {
     const { onClose, selectedValue, ...other } = props;
-
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
+    var signUpArr = [];
 
-    function handleNext() {
-        if(runSignUpChecks()){
-            setActiveStep(prevActiveStep => prevActiveStep + 1);
-        }  else {
-            alert("Try Filling Out the Form Properly")
+    function handleNext(page) {
+        if (page === "team") {
+            createTeam().then( () => {
+                return true;
+            });
+        } else if(page === "sign"){            
+            checkUser().then( (result) => {
+                if (result) {                    
+                    setActiveStep(prevActiveStep => prevActiveStep + 1);
+                } else {
+                    alert("Try Filling Out the Form Properly")
+                }
+            });
         }
     }
+
+    function getSteps() {
+        return ['Sign Up', 'Team Sign Up', 'Complete'];
+      }
+      
+      function getStepContent(step) {
+        switch (step) {
+          case 0:
+            return <SignUpForm callback={signUpCallback}/>;
+          case 1:
+            return <TeamSignUp />;
+          case 2:
+            return <Complete />;
+          default:
+            return 'Unknown step';
+        }
+      }
+
+      function getNextButton(step) {
+        switch (step) {
+            case 0:
+                return (
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => { handleNext("sign") }}
+                        className={classes.button}
+                    >
+                        Next
+                    </Button>
+                )
+            case 1:
+                return (
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => { handleNext("team") }}
+                            className={classes.button}
+                        >
+                            Next
+                        </Button>
+                    )
+            case 2:
+                return (
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => { handleFinish() }}
+                        className={classes.button}
+                    >
+                        Next
+                    </Button>
+                )
+            default:
+                return 'Unknown step';
+        }
+      }
 
     function handleBack() {
         setActiveStep(prevActiveStep => prevActiveStep - 1);
@@ -71,8 +121,31 @@ export default function Register(props) {
         onClose();
     }
 
-    function runSignUpChecks(){
-        return true;
+    function createTeam(){
+        console.log("created team");
+    }
+
+    function checkUser(){        
+        var url = process.env.REACT_APP_API_URI + 'user/' + signUpArr['username'];
+        return fetch(url, {
+            method: "GET",
+        })
+        .then(res => res.json())
+        .then( (result) => {          
+                if(result.result === true){
+                    return false
+                } else {
+                    return true
+                }
+            },
+            (error) => {
+                return false
+            }
+        )
+    }
+
+    function signUpCallback(e) {
+        signUpArr[e.target.name] = e.target.value        
     }
 
     return (
@@ -105,20 +178,7 @@ export default function Register(props) {
                                     <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
                                         Back
                                     </Button>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={() => {
-                                            if (activeStep === steps.length - 1) {
-                                                handleFinish()
-                                            } else {
-                                                handleNext()
-                                            }
-                                        }}
-                                        className={classes.button}
-                                    >
-                                        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                                    </Button>
+                                    {getNextButton(activeStep)}
                                 </div>
                             </div>
                     </DialogContent>

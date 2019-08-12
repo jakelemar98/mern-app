@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './404-sign.css';
+import styles from '../../static/css/404-sign.css';
 
 export default function NotFound() {
     return (
