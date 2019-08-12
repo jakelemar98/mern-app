@@ -8,8 +8,8 @@ spring:
       server:
         git:
           uri: https://github.com/jakelemar98/appConfig
-          username: jakelemar98
-          password: Isu02201998
+          username: ${git_username}
+          password: ${git_password}
           clone-on-start: true
           search-paths:
           - '{application}'
