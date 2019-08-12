@@ -36,7 +36,7 @@ SpringCloudConfig.load(configOptions).then(theConfig => {
 
    app.get('/api/user', verifyToken, getUser)
    app.get('/api/users', verifyToken, getUsers)   
-   app.post("/api/users", verifyToken, addUser)
+   app.post("/api/users", addUser)
    app.get('/api/user/:username', checkUser)
    app.put('/api/users/:user_id', verifyToken, updateUser)
    app.put('/api/users/password/:id', verifyToken, updateUserPass)
@@ -138,11 +138,14 @@ SpringCloudConfig.load(configOptions).then(theConfig => {
 
    function addUser(req, res){
     try {
+        console.log(req.body);
+        
         req.body.password = Bcrypt.hashSync(req.body.password, 10);
         var dbo = req.db.db("app");
         
         var myobj = {
-                name: req.body.name,
+                first: req.body.first,
+                last: req.body.last,
                 username: req.body.username,
                 password: req.body.password,
                 user_groups: ["User"]
@@ -154,7 +157,8 @@ SpringCloudConfig.load(configOptions).then(theConfig => {
                 response
             });
         });
-    } catch (error) {        
+    } catch (error) {
+        console.log(error);        
         res.sendStatus(500);
     }
    }

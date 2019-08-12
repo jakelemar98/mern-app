@@ -158,26 +158,27 @@ export default function SignUp(props) {
   }
 
   function createUser(){
-    var url = process.env.REACT_APP_API_URI + 'users';
+    var url = process.env.REACT_APP_API_URI + 'users';    
     return fetch(url, {
         method: "POST",
+        headers: {
+         'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },        
         body: JSON.stringify({
           first: state.first,
-          first: state.last,
-          first: state.username,
-          first: state.password,
+          last: state.last,
+          username: state.username,
+          password: state.password,
         })
     })
     .then(res => res.json())
     .then( (result) => {          
-            if(result.result === true){                
-                return false
-            } else {
-                return true
-            }
+           console.log(result);
         },
         (error) => {
-            return false
+            console.log(error);
+            
         }
     )
   }
