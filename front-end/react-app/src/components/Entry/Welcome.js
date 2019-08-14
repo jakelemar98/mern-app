@@ -178,7 +178,7 @@ export default function MiniDrawer(props) {
       <main className={classes.content}>
 
       </main>
-      <Register open = {dialogOpen} onClose={ onClose } />
+      <Register open = {dialogOpen} onClose={ onClose } history={props.history} />
     </div>
   );
 }

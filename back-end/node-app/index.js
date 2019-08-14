@@ -46,6 +46,11 @@ SpringCloudConfig.load(configOptions).then(theConfig => {
    app.put('/api/todos/:todo',verifyToken, updateTodo)
    app.delete('/api/todos/:todo',verifyToken, deleteTodo)
    
+//    app.get('/api/teams', verifyToken, getTeams);
+   app.post('/api/teams', addTeam);
+//    app.put('/api/todos/:team',verifyToken, updateTeam)
+//    app.delete('/api/todos/:team',verifyToken, deleteTeam)
+
    app.get("/api/unitTest", (req, res) => {
        res.send({"Hey": "hello"})
    })
@@ -153,6 +158,7 @@ SpringCloudConfig.load(configOptions).then(theConfig => {
     
         dbo.collection("users").insertOne(myobj, function(err, response) {
             if (err) throw err;
+            response = response.ops[0]._id
             res.json({
                 response
             });
@@ -324,6 +330,32 @@ SpringCloudConfig.load(configOptions).then(theConfig => {
            }
        });   
    }
+
+   function addTeam(req, res){
+    try {        
+        var dbo = req.db.db("app");
+        
+        var myobj = {
+                team: req.body.team_name,
+                city: req.body.city,
+                state: req.body.state,
+                zip: req.body.zip,
+                email: req.body.email,
+                team_owner: req.body.team_owner
+            };
+    
+        dbo.collection("teams").insertOne(myobj, function(err, response) {
+            if (err) throw err;
+            res.json({
+                response
+            });
+        });
+    } catch (error) {
+        console.log(error);        
+        res.sendStatus(500);
+    }
+   }
+
 });
 module.exports = app;
 

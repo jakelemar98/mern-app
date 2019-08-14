@@ -33,23 +33,11 @@ export default function Register(props) {
     const { onClose, selectedValue, ...other } = props;
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
+    const [allowTeamPage, setAllow] = React.useState(true)
     const steps = getSteps();
-    var signUpArr = [];
 
-    function handleNext(page) {
-        if (page === "team") {
-            createTeam().then( () => {
-                return true;
-            });
-        } else if(page === "sign"){            
-            checkUser().then( (result) => {
-                if (result) {                    
-                    setActiveStep(prevActiveStep => prevActiveStep + 1);
-                } else {
-                    alert("Try Filling Out the Form Properly")
-                }
-            });
-        }
+    function handleNext() {
+        setActiveStep(prevActiveStep => prevActiveStep + 1);
     }
 
     function getSteps() {
@@ -63,7 +51,7 @@ export default function Register(props) {
           case 1:
             return <TeamSignUp />;
           case 2:
-            return <Complete />;
+            return <Complete history={props.history}/>;
           default:
             return 'Unknown step';
         }
@@ -78,6 +66,7 @@ export default function Register(props) {
                         color="primary"
                         onClick={() => { handleNext("sign") }}
                         className={classes.button}
+                        disabled={allowTeamPage}
                     >
                         Next
                     </Button>
@@ -109,10 +98,6 @@ export default function Register(props) {
         }
       }
 
-    function handleBack() {
-        setActiveStep(prevActiveStep => prevActiveStep - 1);
-    }
-
     function handleFinish(){
         onClose()
     }
@@ -121,31 +106,8 @@ export default function Register(props) {
         onClose();
     }
 
-    function createTeam(){
-        console.log("created team");
-    }
-
-    function checkUser(){        
-        var url = process.env.REACT_APP_API_URI + 'user/' + signUpArr['username'];
-        return fetch(url, {
-            method: "GET",
-        })
-        .then(res => res.json())
-        .then( (result) => {          
-                if(result.result === true){
-                    return false
-                } else {
-                    return true
-                }
-            },
-            (error) => {
-                return false
-            }
-        )
-    }
-
-    function signUpCallback(e) {
-        signUpArr[e.target.name] = e.target.value        
+    function signUpCallback() {
+        setAllow(false)
     }
 
     return (
@@ -175,9 +137,6 @@ export default function Register(props) {
                                     {getStepContent(activeStep)}
                                 </div>
                                 <div>
-                                    <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                                        Back
-                                    </Button>
                                     {getNextButton(activeStep)}
                                 </div>
                             </div>

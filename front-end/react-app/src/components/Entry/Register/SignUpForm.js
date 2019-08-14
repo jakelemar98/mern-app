@@ -10,6 +10,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Button } from '@material-ui/core';
 import FormValidator from '../../Utils/FormValidation';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { green } from '@material-ui/core/colors';
+import CheckIcon from '@material-ui/icons/Check';
+
 const useStyles = makeStyles(theme => ({
   '@global': {
     body: {
@@ -32,11 +36,27 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  wrapper: {
+    // margin: theme.spacing(1),
+    // position: 'relative',
+  }, 
+  buttonProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
 }));
 
 export default function SignUp(props) {
   const classes = useStyles();
   var submitted = "false"
+
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
+  const [showSignup, setShow] = React.useState("block")
 
   var validator = new FormValidator([
     {
@@ -115,6 +135,10 @@ export default function SignUp(props) {
     submitted = true;
 
     if (validation.isValid) {
+      if (!loading) {
+        setSuccess(false)
+        setLoading(true)
+      }
       checkUser().then( (result) => {
         if (result === true) {
           setState( prevState => ({
@@ -124,7 +148,16 @@ export default function SignUp(props) {
             })
           )
           createUser().then( (result) => {
-            console.log(result);
+            if (result.response) {
+              localStorage.setItem("userId", result.response)
+              signInUser().then( (result) => {
+                localStorage.setItem("token", result.token)
+                props.callback()
+              })
+              
+            } else {
+              alert("error creating user")
+            }
           })
         } else {
           setState( prevState => ({
@@ -133,6 +166,7 @@ export default function SignUp(props) {
               userExistsMessage: "Username already exists"
             })
           )
+          setLoading(false)
         }
       })
     }    
@@ -174,130 +208,181 @@ export default function SignUp(props) {
     })
     .then(res => res.json())
     .then( (result) => {          
-           console.log(result);
+           setSuccess(true)
+           setLoading(false)
+           setShow("none")
+           return result
         },
         (error) => {
             console.log(error);
-            
+            return error
         }
     )
   }
-  
-  let validation = submitted === false ? validator.validate(state) : state.validation                   
-  
-  return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <div style = {{ color: 'red' }} className={validation.first.isInvalid ? 'has-error' : undefined}>
-                <TextField
-                  autoComplete="first"
-                  name="first"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="first"
-                  label="First Name"
-                  autoFocus
-                  onChange={Callback}
-                />
-                <span className="help-block">{validation.first.message}</span>
-              </div>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <div style = {{ color: 'red' }} className={validation.last.isInvalid ? 'has-error' : undefined}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="last"
-                  label="Last Name"
-                  name="last"
-                  autoComplete="lname"
-                  onChange={Callback}
-                />
-                  <span className="help-block">{validation.last.message}</span>
-              </div>
-            </Grid>
-            <Grid item xs={12}>
-              <div style = {{ color: 'red' }} className={(validation.username.isInvalid || state.userExists) ? 'has-error' : undefined}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="username"
-                  label="Username"
-                  name="username"
-                  autoComplete="username"
-                  onChange={Callback}
-                />
-                <span className="help-block">{validation.username.message}</span>
-                <span className="help-block">{state.userExistsMessage}</span>
-              </div>
-            </Grid>
-            <Grid item xs={12}>
-              <div style = {{ color: 'red' }} className={validation.password.isInvalid ? 'has-error' : undefined}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="password"
-                  onChange={Callback}
-                />
-                  <span className="help-block">{validation.password.message}</span>
-              </div>
-            </Grid>
-            <Grid item xs={12}>
-              <div style = {{ color: 'red' }} className={validation.confirm.isInvalid ? 'has-error' : undefined}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="confirm"
-                  label="Confirm Password"
-                  type="password"
-                  id="confirm"
-                  autoComplete="confirm"
-                  onChange={Callback}
-                />
-                <span style = {{ color: 'red' }} className="help-block" >
-                  {validation.confirm.message}
-                </span>
-              </div>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={handleSignUp}
-            >
-              Sign Up
-            </Button>
-          </Grid>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/login" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
+
+  function signInUser() {    
+    // e.preventDefault();
+    var url = process.env.REACT_APP_API_URI + 'login'
+    return fetch(url, {
+    	method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+            username: state.username,
+            password: state.password,
+          })
+    })
+    .then((response) => {
+      if (response.status === 200){
+        return response.json()
+      } else {
+        throw new Error(response.status)
+      }
+    })
+    .then((responseData) => {
+      return responseData;
+    })
+    .catch(error => console.warn("big error" + error));    
+  };
+
+  function CompletedSignUp() {
+    return (      
+      <div>
+        <Container component="main" maxWidth="xs">
+        <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <CheckIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign up Complete!
+            </Typography>
+        </div>
+        </Container>
       </div>
-    </Container>
+    )
+  }
+  
+  let validation = submitted === false ? validator.validate(state) : state.validation                     
+
+  return (
+      <div>
+        <Container component="main" maxWidth="xs" style={{ display: showSignup }}>
+          <CssBaseline />
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign up
+            </Typography>
+            <form className={classes.form} noValidate>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <div style = {{ color: 'red' }} className={validation.first.isInvalid ? 'has-error' : undefined}>
+                    <TextField
+                      autoComplete="first"
+                      name="first"
+                      variant="outlined"
+                      required
+                      fullWidth
+                      id="first"
+                      label="First Name"
+                      autoFocus
+                      onChange={Callback}
+                    />
+                    <span className="help-block">{validation.first.message}</span>
+                  </div>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <div style = {{ color: 'red' }} className={validation.last.isInvalid ? 'has-error' : undefined}>
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      id="last"
+                      label="Last Name"
+                      name="last"
+                      autoComplete="lname"
+                      onChange={Callback}
+                    />
+                      <span className="help-block">{validation.last.message}</span>
+                  </div>
+                </Grid>
+                <Grid item xs={12}>
+                  <div style = {{ color: 'red' }} className={(validation.username.isInvalid || state.userExists) ? 'has-error' : undefined}>
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      id="username"
+                      label="Username"
+                      name="username"
+                      autoComplete="username"
+                      onChange={Callback}
+                    />
+                    <span className="help-block">{validation.username.message}</span>
+                    <span className="help-block">{state.userExistsMessage}</span>
+                  </div>
+                </Grid>
+                <Grid item xs={12}>
+                  <div style = {{ color: 'red' }} className={validation.password.isInvalid ? 'has-error' : undefined}>
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="password"
+                      autoComplete="password"
+                      onChange={Callback}
+                    />
+                      <span className="help-block">{validation.password.message}</span>
+                  </div>
+                </Grid>
+                <Grid item xs={12}>
+                  <div style = {{ color: 'red' }} className={validation.confirm.isInvalid ? 'has-error' : undefined}>
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      name="confirm"
+                      label="Confirm Password"
+                      type="password"
+                      id="confirm"
+                      autoComplete="confirm"
+                      onChange={Callback}
+                    />
+                    <span style = {{ color: 'red' }} className="help-block" >
+                      {validation.confirm.message}
+                    </span>
+                  </div>
+                </Grid>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    onClick={handleSignUp}
+                  >
+                    Sign Up
+                  </Button>
+                  {loading && <CircularProgress size={128} className={classes.buttonProgress} />}
+              </Grid>
+              <Grid container justify="flex-end">
+                <Grid item>
+                  <Link href="/login" variant="body2">
+                    Already have an account? Sign in
+                  </Link>
+                </Grid>
+              </Grid>
+            </form>
+          </div>
+        </Container>
+        {success ? <CompletedSignUp /> : null}
+      </div>
   );
 }
