@@ -60,14 +60,12 @@ class Auth {
           if (getGroup) {          
             var group = result.user_groups.includes("Admin");
             return group;
-          } else {
+          } else {            
             var authenticated = result.user_groups.includes("User");
             return authenticated
           }
         },
         (error) => {
-          console.log("error ", error);
-          
           localStorage.removeItem('token')
           var authenticated = false;          
           return authenticated;

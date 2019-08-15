@@ -50,9 +50,8 @@ export class Account extends Component {
         })
           .then(res => res.json())
           .then( (result) => {                                
-                var name = result.name.split(" ");
-                var first = name[0];
-                var last = name[1];
+                var first = result.first;
+                var last = result.last;
                 
                 this.setState({
                     isLoaded: true,
@@ -126,17 +125,14 @@ export class Account extends Component {
       };
 
     updateUser = e => {
-        var name = this.state.user.name.split(" ");
-        var first = name[0];
-        var last = name[1];
+        var first = this.state.user.first;
+        var last = this.state.user.last;
         var username = this.state.user.username        
 
         if( (first !== this.state.first) || (last !== this.state.last) || (username !== this.state.username) ){
-            var url = process.env.REACT_APP_API_URI + 'users/' + this.state.user.user_id
+            var url = process.env.REACT_APP_API_URI + 'users/' + this.state.user._id
 
             var token = localStorage.getItem("token");
-
-            var fullname = this.state.first + " " + this.state.last
             
             fetch(url, {
                 method: "PUT",
@@ -146,7 +142,8 @@ export class Account extends Component {
                 'Content-Type': 'application/json'
             }, body: JSON.stringify({
                 username: this.state.username,
-                name: fullname,
+                first: this.state.first,
+                last: this.state.last
               })
             })
             .then((response) => {

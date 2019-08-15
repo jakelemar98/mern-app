@@ -32,22 +32,22 @@ SpringCloudConfig.load(configOptions).then(theConfig => {
    
    // ROUTE
    
-   app.post('/api/login', login);
+    app.post('/api/login', login);
 
-   app.get('/api/user', verifyToken, getUser)
-   app.get('/api/users', verifyToken, getUsers)   
-   app.post("/api/users", addUser)
-   app.get('/api/user/:username', checkUser)
-   app.put('/api/users/:user_id', verifyToken, updateUser)
-   app.put('/api/users/password/:id', verifyToken, updateUserPass)
-   
-   app.get('/api/todos', verifyToken, getTodos);
-   app.post('/api/todos', verifyToken, addTodo);
-   app.put('/api/todos/:todo',verifyToken, updateTodo)
-   app.delete('/api/todos/:todo',verifyToken, deleteTodo)
-   
-//    app.get('/api/teams', verifyToken, getTeams);
-   app.post('/api/teams', addTeam);
+    app.get('/api/user', verifyToken, getUser)
+    app.get('/api/users', verifyToken, getUsers)   
+    app.post("/api/users", addUser)
+    app.get('/api/user/:username', checkUser)
+    app.put('/api/users/:user_id', verifyToken, updateUser)
+    app.put('/api/users/password/:id', verifyToken, updateUserPass)
+
+    app.get('/api/todos', verifyToken, getTodos);
+    app.post('/api/todos', verifyToken, addTodo);
+    app.put('/api/todos/:todo',verifyToken, updateTodo)
+    app.delete('/api/todos/:todo',verifyToken, deleteTodo)
+    
+    app.get('/api/teams/byUser', verifyToken, getTeamsById);
+    app.post('/api/teams', addTeam);
 //    app.put('/api/todos/:team',verifyToken, updateTeam)
 //    app.delete('/api/todos/:team',verifyToken, deleteTeam)
 
@@ -178,13 +178,13 @@ SpringCloudConfig.load(configOptions).then(theConfig => {
                
                var myobj = {
                        $set: {
-                           name: req.body.name,
+                           first: req.body.first,
+                           last:  req.body.last,
                            username: req.body.username
                        }
                    };
                
-               var myquery = { user_id: req.params.user_id };
-   
+               var myquery = {_id: new ObjectID(req.params.user_id)};
                dbo.collection("users").updateOne(myquery, myobj, {upsert: true}).then((obj) => {
                    dbo.collection("users").findOne({ username: req.body.username }, function(err, result){                    
                        jwt.sign({user: result}, 'secretKey', {expiresIn: '1h' }, (err, token) => {
@@ -330,6 +330,28 @@ SpringCloudConfig.load(configOptions).then(theConfig => {
            }
        });   
    }
+
+   function getTeamsById(req, res){
+    jwt.verify(req.token, 'secretKey', (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+        } else {
+            var dbo = req.db.db("app");
+            var userId = authData.user._id
+            var myquery = {team_owner: userId};
+            
+            dbo.collection("teams").findOne( myquery).then( (response) => {
+                response.user = authData.user    
+                res.send({
+                    response
+                })
+            }).catch( (err) => {
+                console.log(err);
+                res.sendStatus(500)
+            })
+        }
+    });
+}
 
    function addTeam(req, res){
     try {        

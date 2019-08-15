@@ -21,7 +21,7 @@ function App() {
         <Route exact path="/login" component={LoginForm} />
         <Route exact path="/register" component={Register} />
         <ProtectedAdminRoute exact path="/dashboard" component={Dashboard} />
-        <ProtectedAdminRoute exact path="/account" component={Account} />
+        <ProtectedRoute exact path="/account" component={Account} />
         <ProtectedRoute exact path="/home" component={homepage} />
         <Route exact path="/" component={Welcome}/>
         <Route path="*" component={NotFound} />
