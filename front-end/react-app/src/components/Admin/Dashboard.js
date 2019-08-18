@@ -17,6 +17,7 @@ export class Dashboard extends Component {
       }
     
       componentDidMount() {
+        document.title = "Admin-Dashboard"
         this.fetchDashItems();
         this.fetchUsers();
       }
