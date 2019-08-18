@@ -113,7 +113,6 @@ export default function MiniDrawer(props) {
   return (
     
     <div className={classes.root}>
-      <title>{ TITLE }</title>
       <CssBaseline />
       <AppBar
         position="fixed"
