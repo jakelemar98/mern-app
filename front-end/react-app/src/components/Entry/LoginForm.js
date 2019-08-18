@@ -17,6 +17,7 @@ export class LoginForm extends Component {
   };
   
   componentDidMount() {
+    document.title = "Login"
     Auth.isAuthenticated().then((result) => {
       if(result){        
         Auth.userIsAdmin().then((result) => {
@@ -101,6 +102,12 @@ export class LoginForm extends Component {
           <br />
           <RaisedButton
             label="Login"
+            primary={true}
+            style={styles.button}
+            onClick={this.login}
+          />
+          <RaisedButton
+            label="Back"
             primary={true}
             style={styles.button}
             onClick={this.login}

@@ -23,6 +23,7 @@ import Register from './Register/Register';
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
+  
   root: {
     display: 'flex',
   },
@@ -110,6 +111,7 @@ export default function MiniDrawer(props) {
   }
 
   return (
+    
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
